@@ -22,7 +22,7 @@ export const suggestActionFields = createServerFn({ method: "POST" })
   .handler(async ({ data }): Promise<FillResult> => {
     const apiKey = process.env['LOVABLE_API_KEY'];
     if (!apiKey) {
-      return { ok: false, error: "A IA não está configurada." };
+      return { ok: false, error: "De AI is niet geconfigureerd." };
     }
     return generateFieldSuggestions(apiKey, data);
   });
