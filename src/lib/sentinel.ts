@@ -20,6 +20,13 @@ export function isOverdue(a: Action, ref: Date = today()) {
   return new Date(a.due) < ref;
 }
 
+export function daysOverdue(a: Action, ref: Date = today()) {
+  if (!a.due || isFinished(a)) return 0;
+  const d = Math.round((ref.getTime() - new Date(a.due).getTime()) / 86400000);
+  return d > 0 ? d : 0;
+}
+
+
 export const STATUS_TONE: Record<Status, string> = {
   Open: "bg-status-open/15 text-foreground border-status-open/40",
   "In uitvoering": "bg-status-progress/15 text-status-progress border-status-progress/40",
