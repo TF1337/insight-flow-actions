@@ -140,7 +140,7 @@ function NewActionPage() {
     navigate({ to: "/acties" });
   }
 
-  const shownPhoto = photo || (isExample ? form.photo : "");
+  const shownPhoto = photo || form.photo;
   const measures = kpiMeasures[form.tag] ?? [];
 
   return (
