@@ -204,16 +204,21 @@ function NewActionPage() {
             </Link>
             <h1 className="mt-1 text-3xl font-bold">{editing ? "Actie bewerken" : "Nieuwe actie"}</h1>
           </div>
-          {!editing && (
-            <div className="flex flex-wrap gap-2">
-              <Button variant="ghost" className="text-xs" onClick={() => reset((exampleIndex + 1) % examples.length)}>
-                <RotateCcw /> Voorbeeld
-              </Button>
-              <Button variant="outline" onClick={() => reset(-1)}>
-                <Plus /> Nieuwe melding
-              </Button>
-            </div>
-          )}
+          <div className="flex flex-wrap gap-2">
+            <Button variant="outline" onClick={fillWithAI} disabled={aiLoading}>
+              {aiLoading ? <Loader2 className="animate-spin" /> : <Wand2 />} {aiLoading ? "AI vult aan…" : "AI aanvullen"}
+            </Button>
+            {!editing && (
+              <>
+                <Button variant="ghost" className="text-xs" onClick={() => reset((exampleIndex + 1) % examples.length)}>
+                  <RotateCcw /> Voorbeeld
+                </Button>
+                <Button variant="outline" onClick={() => reset(-1)}>
+                  <Plus /> Nieuwe melding
+                </Button>
+              </>
+            )}
+          </div>
         </div>
 
         <section className="overflow-hidden rounded-xl border bg-card shadow-card">
