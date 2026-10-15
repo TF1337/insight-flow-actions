@@ -31,7 +31,7 @@ function ActionsPage() {
   const { actions, observations } = useApp();
   const { aanpak: aanpakParam } = Route.useSearch();
   const navigate = Route.useNavigate();
-  const [expanded, setExpanded] = useState<string | null>(null);
+  const [oorzaakOpen, setOorzaakOpen] = useState<string | null>(null);
   const [verlopenOpen, setVerlopenOpen] = useState(false);
   const aanpak = aanpakParam ?? "Alle";
   const setAanpak = (p: string) =>
@@ -82,11 +82,9 @@ function ActionsPage() {
             <ul className="mt-1 grid gap-1.5 md:grid-cols-2">
               {verlopen.map((a) => (
                 <li key={a.id}>
-                  <button
-                    onClick={() => {
-                      setAanpak("Alle");
-                      setExpanded(a.id);
-                    }}
+                  <Link
+                    to="/nieuw"
+                    search={{ actie: a.id }}
                     className="flex w-full items-center gap-2 rounded-md p-1.5 text-left text-sm hover:bg-muted"
                   >
                     <span className="min-w-0 flex-1 truncate font-medium">{a.title}</span>
@@ -94,7 +92,7 @@ function ActionsPage() {
                     <span className="shrink-0 text-xs font-semibold text-destructive">
                       {daysOverdue(a)} {daysOverdue(a) > 1 ? "dgn" : "dag"} verlopen
                     </span>
-                  </button>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -154,13 +152,15 @@ function ActionsPage() {
         <div className="grid gap-4">
           {rows.map((a) => {
             const o = observations.find((x) => x.id === a.observationId);
-            const open = expanded === a.id;
+            const whys = o?.whys ?? [];
+            const oorzaakUitgeklapt = oorzaakOpen === a.id;
             return (
               <article key={a.id} className="overflow-hidden rounded-xl border bg-card shadow-card">
-                <button
-                  onClick={() => setExpanded(open ? null : a.id)}
-                  className="flex w-full flex-col text-left transition hover:border-primary sm:flex-row"
-                  aria-expanded={open}
+                <Link
+                  to="/nieuw"
+                  search={{ actie: a.id }}
+                  className="flex w-full flex-col text-left transition hover:bg-muted/40 sm:flex-row"
+                  aria-label={`Actie openen in formulier: ${a.title}`}
                 >
                   {o?.photo ? (
                     <img src={o.photo} alt={o.title} className="h-44 w-full object-cover sm:h-auto sm:w-48" />
@@ -182,19 +182,63 @@ function ActionsPage() {
                         {W5H_KEYS.map((k) => (
                           <Fragment key={k}>
                             <dt className="font-semibold text-muted-foreground">{W5H_LABEL[k]}</dt>
-                            <dd className={open ? "" : "line-clamp-1"}>{o.w5h[k] || "—"}</dd>
+                            <dd className="line-clamp-1">{o.w5h[k] || "—"}</dd>
                           </Fragment>
                         ))}
                       </dl>
                     ) : (
                       <p className="text-xs text-muted-foreground">Geen gekoppelde observatie (5W1H)</p>
                     )}
-                    <p className="rounded-md bg-accent/15 px-2 py-1 text-xs">
-                      <span className="font-semibold">Oorzaak (root cause):</span>{" "}
-                      {o ? (o.waaromOnbekend || !o.w5h.waarom ? "Nog te bepalen" : o.w5h.waarom) : "Nog te bepalen"}
-                    </p>
                   </div>
-                </button>
+                </Link>
+                <div className="border-t px-3 py-1.5">
+                  <button
+                    onClick={() => setOorzaakOpen(oorzaakUitgeklapt ? null : a.id)}
+                    aria-expanded={oorzaakUitgeklapt}
+                    className="flex w-full items-center gap-2 rounded-md bg-accent/15 px-2 py-1 text-left text-xs hover:bg-accent/25"
+                  >
+                    <span className="shrink-0 font-semibold">Oorzaak (root cause):</span>
+                    <span className="min-w-0 flex-1 truncate">
+                      {o ? (o.waaromOnbekend || !o.w5h.waarom ? "Nog te bepalen" : o.w5h.waarom) : "Nog te bepalen"}
+                    </span>
+                    {oorzaakUitgeklapt ? <ChevronUp className="size-3.5 shrink-0" /> : <ChevronDown className="size-3.5 shrink-0" />}
+                  </button>
+                  {oorzaakUitgeklapt && (
+                    <div className="px-2 pt-3 pb-2">
+                      <p className="mb-3 text-[11px] font-bold tracking-wide text-muted-foreground uppercase">5× waarom</p>
+                      {whys.length > 0 ? (
+                        <ol>
+                          {whys.map((w, i) => (
+                            <li
+                              key={i}
+                              className={cn(
+                                "relative grid grid-cols-[26px_1fr] gap-3 pb-3",
+                                i < whys.length - 1 && "before:absolute before:top-6 before:bottom-0 before:left-3 before:w-px before:bg-border",
+                              )}
+                            >
+                              <span
+                                className={cn(
+                                  "z-10 grid h-6 w-6 place-items-center rounded-full border text-[11px] font-bold",
+                                  i === whys.length - 1 ? "border-primary bg-primary text-primary-foreground" : "bg-card text-primary",
+                                )}
+                              >
+                                {i + 1}
+                              </span>
+                              <div>
+                                <p className="text-xs font-semibold">{w.question}</p>
+                                <p className="text-xs text-muted-foreground">{w.answer || "—"}</p>
+                              </div>
+                            </li>
+                          ))}
+                        </ol>
+                      ) : (
+                        <p className="text-xs text-muted-foreground">
+                          De 5× waarom is nog niet ingevuld. Open de actie in het formulier om de grondoorzaak te bepalen.
+                        </p>
+                      )}
+                    </div>
+                  )}
+                </div>
               </article>
             );
           })}
