@@ -20,6 +20,8 @@ export const W5H_LABEL: Record<keyof W5H, string> = {
   hoe: "Hoe",
 };
 
+export type Why = { question: string; answer: string };
+
 export type Observation = {
   id: string;
   title: string;
@@ -31,6 +33,7 @@ export type Observation = {
   reporter: string;
   createdAt: string;
   w5h: W5H;
+  whys?: Why[] | undefined;
   waaromOnbekend: boolean;
 };
 

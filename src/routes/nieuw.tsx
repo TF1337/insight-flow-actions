@@ -1,10 +1,11 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useRef, useState } from "react";
+import { z } from "zod";
 import { ArrowLeft, Check, ChevronDown, ChevronUp, ImagePlus, Plus, RotateCcw, Save, Target, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useApp, uid } from "@/data/store";
 import { KPI_LEVERTIJD_ZORG, isoDay } from "@/data/mock";
-import { TOPICS, type Priority, type Topic } from "@/data/types";
+import { TOPICS, type Observation, type Priority, type Topic } from "@/data/types";
 import { assignees, currentUser, emptyForm, examples, kpiMeasures, type CoachForm } from "@/data/examples";
 import { cn } from "@/lib/utils";
 
@@ -19,6 +20,9 @@ export const Route = createFileRoute("/nieuw")({
       { name: "twitter:card", content: "summary" },
     ],
   }),
+  validateSearch: z.object({
+    actie: z.string().optional(),
+  }),
   component: NewActionPage,
 });
 
@@ -29,16 +33,42 @@ function FieldLabel({ children }: { children: React.ReactNode }) {
   return <span className="mb-2 flex items-center gap-1.5 text-[11px] font-bold tracking-wide text-muted-foreground uppercase">{children}</span>;
 }
 
+function formFromObservation(o: Observation): CoachForm {
+  return {
+    tag: o.topic,
+    indicators: [],
+    description: o.description,
+    photo: o.photo ?? "",
+    photoLabel: o.title,
+    where: o.w5h.waar,
+    what: o.w5h.wat,
+    why: o.w5h.waarom,
+    how: o.w5h.hoe,
+    whys: o.whys && o.whys.length > 0 ? o.whys : emptyForm.whys,
+  };
+}
+
 function NewActionPage() {
   const navigate = useNavigate();
-  const { upsertAction, upsertObservation } = useApp();
-  const [form, setForm] = useState<CoachForm>(examples[0] ?? emptyForm);
-  const [exampleIndex, setExampleIndex] = useState(0);
+  const { actie: editId } = Route.useSearch();
+  const { actions, observations, upsertAction, upsertObservation } = useApp();
+  const editing = editId ? actions.find((a) => a.id === editId) : undefined;
+  const editingObs = editing?.observationId ? observations.find((o) => o.id === editing.observationId) : undefined;
+  const [form, setForm] = useState<CoachForm>(() => (editingObs ? formFromObservation(editingObs) : (examples[0] ?? emptyForm)));
+  const [exampleIndex, setExampleIndex] = useState(editing ? -1 : 0);
   const isExample = exampleIndex >= 0;
   const [photo, setPhoto] = useState<string | null>(null);
-  const [termijn, setTermijn] = useState<(typeof TERMIJNEN)[number]>("14 dagen");
-  const [aanpak, setAanpak] = useState<Priority>("Actie / Just Do It");
-  const [assignee, setAssignee] = useState("");
+  const [termijn, setTermijn] = useState<(typeof TERMIJNEN)[number]>(() => {
+    if (!editing?.due) return "14 dagen";
+    const days = Math.round((new Date(editing.due).getTime() - Date.now()) / 86400000);
+    const nearest = [7, 14, 21, 28].reduce((b, d) => (Math.abs(d - days) < Math.abs(b - days) ? d : b));
+    return `${nearest} dagen` as (typeof TERMIJNEN)[number];
+  });
+  const [aanpak, setAanpak] = useState<Priority>(editing?.priority ?? "Actie / Just Do It");
+  const [assignee, setAssignee] = useState(() => {
+    const match = assignees.find((p) => p.name === editing?.owner);
+    return match ? `${match.name} · ${match.role}` : "";
+  });
   const [expanded, setExpanded] = useState(true);
   const [error, setError] = useState("");
   const [now] = useState(() => new Date().toLocaleString("nl-NL", { dateStyle: "medium", timeStyle: "short" }));
@@ -67,49 +97,50 @@ function NewActionPage() {
       return;
     }
     const days = Number.parseInt(termijn, 10);
-    const obsId = uid("obs");
+    const obsId = editing?.observationId ?? uid("obs");
     const shown = photo || form.photo || undefined;
     upsertObservation({
       id: obsId,
       title: form.what.trim().slice(0, 80),
       description: form.description || form.what.trim(),
       photo: shown,
-      dept: form.where || "Inbound",
+      dept: form.where || editingObs?.dept || "Inbound",
       topic: form.tag,
-      signal: "oranje",
-      reporter: currentUser,
-      createdAt: isoDay(0),
+      signal: editingObs?.signal ?? "oranje",
+      reporter: editingObs?.reporter ?? currentUser,
+      createdAt: editingObs?.createdAt ?? isoDay(0),
       w5h: {
-        wie: currentUser,
+        wie: editingObs?.w5h.wie ?? currentUser,
         wat: form.what.trim(),
         waar: form.where,
-        wanneer: now,
+        wanneer: editingObs?.w5h.wanneer ?? now,
         waarom: form.why,
         hoe: form.how,
       },
+      whys: form.whys,
       waaromOnbekend: !form.why.trim(),
     });
     upsertAction({
-      id: uid("act"),
-      title: form.how.trim() ? form.how.trim().slice(0, 90) : form.what.trim().slice(0, 90),
+      id: editing?.id ?? uid("act"),
+      title: editing?.title ?? (form.how.trim() ? form.how.trim().slice(0, 90) : form.what.trim().slice(0, 90)),
       observationId: obsId,
       kpi: KPI_LEVERTIJD_ZORG,
       deviation: form.what.trim().slice(0, 80),
       topic: form.tag,
-      dept: form.where || "Inbound",
-      owner: assignee ? assignee.split(" · ")[0]! : currentUser,
+      dept: form.where || editing?.dept || "Inbound",
+      owner: assignee ? assignee.split(" · ")[0]! : (editing?.owner ?? currentUser),
       due: isoDay(days),
       priority: aanpak,
-      status: "Open",
-      feedback: [],
-      gedaan: "",
-      resultaat: "",
-      createdAt: isoDay(0),
+      status: editing?.status ?? "Open",
+      feedback: editing?.feedback ?? [],
+      gedaan: editing?.gedaan ?? "",
+      resultaat: editing?.resultaat ?? "",
+      createdAt: editing?.createdAt ?? isoDay(0),
     });
     navigate({ to: "/acties" });
   }
 
-  const shownPhoto = photo || (isExample ? form.photo : "");
+  const shownPhoto = photo || form.photo;
   const measures = kpiMeasures[form.tag] ?? [];
 
   return (
@@ -120,16 +151,18 @@ function NewActionPage() {
             <Link to="/acties" className="inline-flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-foreground">
               <ArrowLeft className="h-4 w-4" /> Actielijst Levertijd Zorg
             </Link>
-            <h1 className="mt-1 text-3xl font-bold">Nieuwe actie</h1>
+            <h1 className="mt-1 text-3xl font-bold">{editing ? "Actie bewerken" : "Nieuwe actie"}</h1>
           </div>
-          <div className="flex flex-wrap gap-2">
-            <Button variant="ghost" className="text-xs" onClick={() => reset((exampleIndex + 1) % examples.length)}>
-              <RotateCcw /> Voorbeeld
-            </Button>
-            <Button variant="outline" onClick={() => reset(-1)}>
-              <Plus /> Nieuwe melding
-            </Button>
-          </div>
+          {!editing && (
+            <div className="flex flex-wrap gap-2">
+              <Button variant="ghost" className="text-xs" onClick={() => reset((exampleIndex + 1) % examples.length)}>
+                <RotateCcw /> Voorbeeld
+              </Button>
+              <Button variant="outline" onClick={() => reset(-1)}>
+                <Plus /> Nieuwe melding
+              </Button>
+            </div>
+          )}
         </div>
 
         <section className="overflow-hidden rounded-xl border bg-card shadow-card">
