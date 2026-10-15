@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import { ArrowLeft, Check, ChevronDown, ChevronUp, ImagePlus, Plus, RotateCcw, Save, Target, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useApp, uid } from "@/data/store";
-import { KPI_SLA_HEALTHCARE, isoDay } from "@/data/mock";
+import { KPI_LEVERTIJD_ZORG, isoDay } from "@/data/mock";
 import { TOPICS, type Priority, type Topic } from "@/data/types";
 import { assignees, currentUser, emptyForm, examples, kpiMeasures, type CoachForm } from "@/data/examples";
 import { cn } from "@/lib/utils";
@@ -11,10 +11,10 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/nieuw")({
   head: () => ({
     meta: [
-      { title: "Nieuwe actie — SLA Healthcare" },
-      { name: "description", content: "Maak een nieuwe actie aan met foto en 5W1H-analyse onder de KPI SLA Healthcare." },
-      { property: "og:title", content: "Nieuwe actie — SLA Healthcare" },
-      { property: "og:description", content: "Maak een nieuwe actie aan met foto en 5W1H-analyse onder de KPI SLA Healthcare." },
+      { title: "Nieuwe actie — Levertijd Zorg" },
+      { name: "description", content: "Maak een nieuwe actie aan met foto en 5W1H-analyse onder de KPI Levertijd Zorg." },
+      { property: "og:title", content: "Nieuwe actie — Levertijd Zorg" },
+      { property: "og:description", content: "Maak een nieuwe actie aan met foto en 5W1H-analyse onder de KPI Levertijd Zorg." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -93,7 +93,7 @@ function NewActionPage() {
       id: uid("act"),
       title: form.how.trim() ? form.how.trim().slice(0, 90) : form.what.trim().slice(0, 90),
       observationId: obsId,
-      kpi: KPI_SLA_HEALTHCARE,
+      kpi: KPI_LEVERTIJD_ZORG,
       deviation: form.what.trim().slice(0, 80),
       topic: form.tag,
       dept: form.where || "Inbound",
@@ -118,7 +118,7 @@ function NewActionPage() {
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
           <div>
             <Link to="/acties" className="inline-flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-foreground">
-              <ArrowLeft className="h-4 w-4" /> Actielijst SLA Healthcare
+              <ArrowLeft className="h-4 w-4" /> Actielijst Levertijd Zorg
             </Link>
             <h1 className="mt-1 text-3xl font-bold">Nieuwe actie</h1>
           </div>

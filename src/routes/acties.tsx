@@ -4,7 +4,7 @@ import { ArrowLeft, Plus, X } from "lucide-react";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { useApp } from "@/data/store";
-import { KPI_SLA_HEALTHCARE } from "@/data/mock";
+import { KPI_LEVERTIJD_ZORG } from "@/data/mock";
 import { PRIORITIES, W5H_KEYS, W5H_LABEL, type Action } from "@/data/types";
 import { fmtDate, isClosed, isOverdue } from "@/lib/sentinel";
 import { OverdueBadge, StatusBadge } from "@/components/sentinel/Badges";
@@ -13,10 +13,10 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/acties")({
   head: () => ({
     meta: [
-      { title: "Actielijst — SLA Healthcare" },
-      { name: "description", content: "Openstaande acties onder de KPI SLA Healthcare, met foto en 5W1H-analyse." },
-      { property: "og:title", content: "Actielijst — SLA Healthcare" },
-      { property: "og:description", content: "Openstaande acties onder de KPI SLA Healthcare, met foto en 5W1H-analyse." },
+      { title: "Actielijst — Levertijd Zorg" },
+      { name: "description", content: "Openstaande acties onder de KPI Levertijd Zorg, met foto en 5W1H-analyse." },
+      { property: "og:title", content: "Actielijst — Levertijd Zorg" },
+      { property: "og:description", content: "Openstaande acties onder de KPI Levertijd Zorg, met foto en 5W1H-analyse." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -39,7 +39,7 @@ function ActionsPage() {
   const rows = useMemo(
     () =>
       actions
-        .filter((a) => a.kpi === KPI_SLA_HEALTHCARE && !isClosed(a))
+        .filter((a) => a.kpi === KPI_LEVERTIJD_ZORG && !isClosed(a))
         .filter((a) => aanpak === "Alle" || a.priority === aanpak)
         .sort((x, y) => (x.due || "9999").localeCompare(y.due || "9999")),
     [actions, aanpak],
@@ -53,7 +53,7 @@ function ActionsPage() {
             <Link to="/" className="inline-flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-foreground">
               <ArrowLeft className="h-4 w-4" /> KPI-dashboard
             </Link>
-            <h1 className="mt-1 text-3xl font-bold">SLA Healthcare · actielijst</h1>
+            <h1 className="mt-1 text-3xl font-bold">Levertijd Zorg · actielijst</h1>
             <p className="text-muted-foreground">{rows.length} open acties onder deze KPI</p>
           </div>
           <Button asChild>
