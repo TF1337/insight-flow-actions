@@ -50,14 +50,25 @@ function formFromObservation(o: Observation): CoachForm {
 
 function NewActionPage() {
   const navigate = useNavigate();
-  const { upsertAction, upsertObservation } = useApp();
-  const [form, setForm] = useState<CoachForm>(examples[0] ?? emptyForm);
-  const [exampleIndex, setExampleIndex] = useState(0);
+  const { actie: editId } = Route.useSearch();
+  const { actions, observations, upsertAction, upsertObservation } = useApp();
+  const editing = editId ? actions.find((a) => a.id === editId) : undefined;
+  const editingObs = editing?.observationId ? observations.find((o) => o.id === editing.observationId) : undefined;
+  const [form, setForm] = useState<CoachForm>(() => (editingObs ? formFromObservation(editingObs) : (examples[0] ?? emptyForm)));
+  const [exampleIndex, setExampleIndex] = useState(editing ? -1 : 0);
   const isExample = exampleIndex >= 0;
   const [photo, setPhoto] = useState<string | null>(null);
-  const [termijn, setTermijn] = useState<(typeof TERMIJNEN)[number]>("14 dagen");
-  const [aanpak, setAanpak] = useState<Priority>("Actie / Just Do It");
-  const [assignee, setAssignee] = useState("");
+  const [termijn, setTermijn] = useState<(typeof TERMIJNEN)[number]>(() => {
+    if (!editing?.due) return "14 dagen";
+    const days = Math.round((new Date(editing.due).getTime() - Date.now()) / 86400000);
+    const nearest = [7, 14, 21, 28].reduce((b, d) => (Math.abs(d - days) < Math.abs(b - days) ? d : b));
+    return `${nearest} dagen` as (typeof TERMIJNEN)[number];
+  });
+  const [aanpak, setAanpak] = useState<Priority>(editing?.priority ?? "Actie / Just Do It");
+  const [assignee, setAssignee] = useState(() => {
+    const match = assignees.find((p) => p.name === editing?.owner);
+    return match ? `${match.name} · ${match.role}` : "";
+  });
   const [expanded, setExpanded] = useState(true);
   const [error, setError] = useState("");
   const [now] = useState(() => new Date().toLocaleString("nl-NL", { dateStyle: "medium", timeStyle: "short" }));
