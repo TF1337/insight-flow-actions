@@ -8,7 +8,7 @@ import imgTillen from "@/assets/demo-tillen.jpg";
 import imgNooduitgang from "@/assets/demo-nooduitgang.jpg";
 import imgVerlichting from "@/assets/demo-verlichting.jpg";
 
-export const KPI_SLA_HEALTHCARE = "SLA Healthcare";
+export const KPI_LEVERTIJD_ZORG = "SLA Healthcare";
 
 export const DEPTS = ["Inbound", "Opslag", "Orderpick", "Pakstraat", "Outbound", "Retouren"];
 export const PEOPLE = [
@@ -147,7 +147,7 @@ export const MOCK_ACTIONS: Action[] = [
     id: "act-pallet",
     title: "Pallet verwijderen en looproute dock 4 vrijhouden",
     observationId: "obs-pallet",
-    kpi: KPI_SLA_HEALTHCARE,
+    kpi: KPI_LEVERTIJD_ZORG,
     deviation: "Beschadigde pallet bij dock 4",
     topic: "Veiligheid",
     dept: "Inbound",
@@ -164,7 +164,7 @@ export const MOCK_ACTIONS: Action[] = [
     id: "act-scanner-1",
     title: "Defecte scanners retour naar ICT en reservepool inrichten",
     observationId: "obs-scanner",
-    kpi: KPI_SLA_HEALTHCARE,
+    kpi: KPI_LEVERTIJD_ZORG,
     deviation: "Handscanners vaak leeg",
     topic: "Welzijn",
     dept: "Orderpick",
@@ -185,7 +185,7 @@ export const MOCK_ACTIONS: Action[] = [
     id: "act-bezetting",
     title: "Flexpool inzetten op vrijdag outbound",
     observationId: "obs-bezetting",
-    kpi: KPI_SLA_HEALTHCARE,
+    kpi: KPI_LEVERTIJD_ZORG,
     deviation: "Onderbezetting outbound vrijdag",
     topic: "Gezondheid",
     dept: "Outbound",
@@ -202,7 +202,7 @@ export const MOCK_ACTIONS: Action[] = [
     id: "act-olie",
     title: "Lekbak plaatsen en hydrauliekslang heftruck 3 vervangen",
     observationId: "obs-olie",
-    kpi: KPI_SLA_HEALTHCARE,
+    kpi: KPI_LEVERTIJD_ZORG,
     deviation: "Olielekkage heftruck gang C",
     topic: "Milieu",
     dept: "Opslag",
@@ -219,7 +219,7 @@ export const MOCK_ACTIONS: Action[] = [
     id: "act-afval",
     title: "Afvalscheiding pakstraat inrichten met 6S-markering",
     observationId: "obs-afval",
-    kpi: KPI_SLA_HEALTHCARE,
+    kpi: KPI_LEVERTIJD_ZORG,
     deviation: "Afval niet gescheiden",
     topic: "Milieu",
     dept: "Pakstraat",
@@ -236,7 +236,7 @@ export const MOCK_ACTIONS: Action[] = [
     id: "act-tillen",
     title: "A3: tilbelasting zone zwaar structureel verlagen",
     observationId: "obs-tillen",
-    kpi: KPI_SLA_HEALTHCARE,
+    kpi: KPI_LEVERTIJD_ZORG,
     deviation: "Zwaar tillen vanaf lage pallets",
     topic: "Gezondheid",
     dept: "Orderpick",
@@ -253,7 +253,7 @@ export const MOCK_ACTIONS: Action[] = [
     id: "act-nooduitgang",
     title: "Nooduitgang vrijmaken en bufferplek markeren",
     observationId: "obs-nooduitgang",
-    kpi: KPI_SLA_HEALTHCARE,
+    kpi: KPI_LEVERTIJD_ZORG,
     deviation: "Nooduitgang geblokkeerd",
     topic: "Veiligheid",
     dept: "Inbound",
@@ -270,7 +270,7 @@ export const MOCK_ACTIONS: Action[] = [
     id: "act-licht",
     title: "Verlichting gang F herstellen en lichtmeting doen",
     observationId: "obs-licht",
-    kpi: KPI_SLA_HEALTHCARE,
+    kpi: KPI_LEVERTIJD_ZORG,
     deviation: "Verlichting gang F defect",
     topic: "Welzijn",
     dept: "Opslag",
