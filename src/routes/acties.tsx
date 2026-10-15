@@ -5,7 +5,7 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { useApp } from "@/data/store";
 import { KPI_LEVERTIJD_ZORG } from "@/data/mock";
-import { PRIORITIES, W5H_KEYS, W5H_LABEL, type Action, type Priority } from "@/data/types";
+import { W5H_KEYS, W5H_LABEL, type Action, type Priority } from "@/data/types";
 import { fmtDate, isClosed, isOverdue } from "@/lib/sentinel";
 import { OverdueBadge, PriorityBadge, StatusBadge } from "@/components/sentinel/Badges";
 import { cn } from "@/lib/utils";
@@ -161,6 +161,7 @@ function ActionsPage() {
                   <div className="flex-1 space-y-2 p-4">
                     <div className="flex flex-wrap gap-2">
                       <StatusBadge status={a.status} />
+                      <PriorityBadge priority={a.priority} />
                       {isOverdue(a) && <OverdueBadge />}
                     </div>
                     <p className="font-semibold">{a.title}</p>
