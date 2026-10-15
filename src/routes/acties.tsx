@@ -1,13 +1,13 @@
 import { Fragment, useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, Plus, X } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, ChevronRight, Clock, Plus, RefreshCw, X, Zap } from "lucide-react";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { useApp } from "@/data/store";
 import { KPI_LEVERTIJD_ZORG } from "@/data/mock";
-import { PRIORITIES, W5H_KEYS, W5H_LABEL, type Action } from "@/data/types";
+import { PRIORITIES, W5H_KEYS, W5H_LABEL, type Action, type Priority } from "@/data/types";
 import { fmtDate, isClosed, isOverdue } from "@/lib/sentinel";
-import { OverdueBadge, StatusBadge } from "@/components/sentinel/Badges";
+import { OverdueBadge, PriorityBadge, StatusBadge } from "@/components/sentinel/Badges";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/acties")({
