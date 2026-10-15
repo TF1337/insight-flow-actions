@@ -1,9 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useServerFn } from "@tanstack/react-start";
 import { useRef, useState } from "react";
 import { z } from "zod";
-import { ArrowLeft, Check, ChevronDown, ChevronUp, ImagePlus, Loader2, Plus, RotateCcw, Save, Target, Wand2, X } from "lucide-react";
-import { suggestActionFields } from "@/lib/ai/fill.functions";
+import { ArrowLeft, Check, ChevronDown, ChevronUp, ImagePlus, Plus, RotateCcw, Save, Target, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useApp, uid } from "@/data/store";
 import { KPI_LEVERTIJD_ZORG, isoDay } from "@/data/mock";
@@ -72,56 +70,7 @@ function NewActionPage() {
     return match ? `${match.name} · ${match.role}` : "";
   });
   const [expanded, setExpanded] = useState(true);
-  const [aiLoading, setAiLoading] = useState(false);
   const [error, setError] = useState("");
-  const runSuggestActionFields = useServerFn(suggestActionFields);
-
-  async function fillWithAI() {
-    const hasWhys = form.whys.some((w) => w.answer.trim());
-    const missing = ([
-      ["where", form.where],
-      ["what", form.what],
-      ["why", form.why],
-      ["how", form.how],
-    ] as const)
-      .filter(([, value]) => !value.trim())
-      .map(([field]) => field);
-    const allMissing = hasWhys ? missing : [...missing, "whys" as const];
-    if (allMissing.length === 0) {
-      setError("Alle velden zijn al ingevuld.");
-      return;
-    }
-    setAiLoading(true);
-    setError("");
-    try {
-      const res = await runSuggestActionFields({
-        data: {
-          title: editing?.title ?? form.how.trim() ?? "",
-          topic: form.tag,
-          dept: form.where || editing?.dept || "Inbound",
-          deviation: editing?.deviation ?? form.what.trim(),
-          missing: allMissing,
-          current: { where: form.where, what: form.what, why: form.why, how: form.how },
-        },
-      });
-      if (!res.ok) {
-        setError(res.error);
-        return;
-      }
-      const f = res.fields;
-      setForm((prev) => ({
-        ...prev,
-        where: prev.where.trim() ? prev.where : (f.waar ?? prev.where),
-        what: prev.what.trim() ? prev.what : (f.wat ?? prev.what),
-        why: prev.why.trim() ? prev.why : (f.waarom ?? prev.why),
-        how: prev.how.trim() ? prev.how : (f.hoe ?? prev.how),
-        whys: prev.whys.some((w) => w.answer.trim()) ? prev.whys : (f.whys ?? prev.whys),
-      }));
-      if (f.whys && !hasWhys) setExpanded(true);
-    } finally {
-      setAiLoading(false);
-    }
-  }
   const [now] = useState(() => new Date().toLocaleString("nl-NL", { dateStyle: "medium", timeStyle: "short" }));
   const file = useRef<HTMLInputElement>(null);
 
@@ -204,21 +153,16 @@ function NewActionPage() {
             </Link>
             <h1 className="mt-1 text-3xl font-bold">{editing ? "Actie bewerken" : "Nieuwe actie"}</h1>
           </div>
-          <div className="flex flex-wrap gap-2">
-            <Button variant="outline" onClick={fillWithAI} disabled={aiLoading}>
-              {aiLoading ? <Loader2 className="animate-spin" /> : <Wand2 />} {aiLoading ? "AI vult aan…" : "AI aanvullen"}
-            </Button>
-            {!editing && (
-              <>
-                <Button variant="ghost" className="text-xs" onClick={() => reset((exampleIndex + 1) % examples.length)}>
-                  <RotateCcw /> Voorbeeld
-                </Button>
-                <Button variant="outline" onClick={() => reset(-1)}>
-                  <Plus /> Nieuwe melding
-                </Button>
-              </>
-            )}
-          </div>
+          {!editing && (
+            <div className="flex flex-wrap gap-2">
+              <Button variant="ghost" className="text-xs" onClick={() => reset((exampleIndex + 1) % examples.length)}>
+                <RotateCcw /> Voorbeeld
+              </Button>
+              <Button variant="outline" onClick={() => reset(-1)}>
+                <Plus /> Nieuwe melding
+              </Button>
+            </div>
+          )}
         </div>
 
         <section className="overflow-hidden rounded-xl border bg-card shadow-card">
