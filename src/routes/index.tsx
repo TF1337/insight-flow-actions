@@ -9,9 +9,9 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "KPI-Dashboard Logistieke Operatie" },
-      { name: "description", content: "Operationele KPI's en procesindicatoren voor OFM en LDC, met actielijst per KPI." },
+      { name: "description", content: "Operationele KPI's en procesindicatoren voor OVM en LDC, met actielijst per KPI." },
       { property: "og:title", content: "KPI-Dashboard Logistieke Operatie" },
-      { property: "og:description", content: "Operationele KPI's en procesindicatoren voor OFM en LDC, met actielijst per KPI." },
+      { property: "og:description", content: "Operationele KPI's en procesindicatoren voor OVM en LDC, met actielijst per KPI." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -32,7 +32,7 @@ type Kpi = {
 
 type Category = { name: string; tone: string; kpis: Kpi[] };
 
-const OFM: Category[] = [
+const OVM: Category[] = [
   {
     name: "Veiligheid",
     tone: "bg-topic-k",
@@ -47,7 +47,7 @@ const OFM: Category[] = [
     kpis: [
       { title: "Retouren", value: "6,4 d", norm: "Norm 7 dagen", status: "gunstig", bullets: ["Retouren binnen SLA · leeftijd retouren"] },
       { title: "Inbound doorlooptijd", value: "19 u", norm: "Norm <24 uur", status: "gunstig", bullets: ["Leveringen na ontvangst IG binnen 24 uur op voorraad"] },
-      { title: "HBV doorlooptijd", value: "8,6 u", norm: "Norm nog te bepalen", status: "fictief", bullets: ["Vrijgave tot dock · INCD / PRN-KIL"] },
+      { title: "HFV doorlooptijd", value: "8,6 u", norm: "Norm nog te bepalen", status: "fictief", bullets: ["Vrijgave tot dock · INCD / PRN-KIL"] },
       { title: "Klantorders", value: "98,7%", norm: "Norm nog te bepalen", status: "fictief", bullets: ["On time: 98,7%", "In full: 99,2%"] },
     ],
   },
@@ -56,7 +56,7 @@ const OFM: Category[] = [
     tone: "bg-topic-p",
     kpis: [
       { title: "Retouren Index", value: "97%", norm: "Norm <100%", status: "gunstig" },
-      { title: "OFM Index", value: "97%", norm: "Norm <100%", status: "gunstig", bullets: ["Directe uren index: 96%"] },
+      { title: "OVM Index", value: "97%", norm: "Norm <100%", status: "gunstig", bullets: ["Directe uren index: 96%"] },
     ],
   },
   {
@@ -205,7 +205,7 @@ function Dashboard() {
         </h1>
       </header>
       <main className="mx-auto grid max-w-6xl gap-8 px-4 py-8 lg:grid-cols-2">
-        <SiteColumn name="OFM" categories={OFM} />
+        <SiteColumn name="OVM" categories={OVM} />
         <SiteColumn name="LDC" categories={LDC} openCount={openCount} />
       </main>
       <footer className="pb-8 text-center text-xs text-muted-foreground">
