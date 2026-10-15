@@ -66,28 +66,80 @@ function ActionsPage() {
           </Button>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="text-sm font-semibold text-muted-foreground">Aanpak:</span>
-          {["Alle", ...PRIORITIES].map((p) => (
-            <button
-              key={p}
-              onClick={() => setAanpak(p)}
-              className={cn(
-                "rounded-full border px-3 py-1 text-sm font-semibold",
-                aanpak === p ? "border-primary bg-primary text-primary-foreground" : "bg-card hover:border-accent",
-              )}
-            >
-              {p}
-            </button>
-          ))}
-          {aanpakParam && (
-            <button
-              onClick={() => setAanpak("Alle")}
-              className="inline-flex items-center gap-1 rounded-full bg-primary px-3 py-1 text-sm font-semibold text-primary-foreground"
-            >
-              {aanpakParam} <X className="h-3.5 w-3.5" aria-label="Filter wissen" />
-            </button>
-          )}
+        {longOpen.length > 0 && (
+          <section className="rounded-xl border border-destructive/40 bg-card p-3 shadow-card">
+            <p className="mb-2 flex items-center gap-2 text-sm font-bold">
+              <Clock className="h-4 w-4 text-destructive" /> Al meerdere weken open ({longOpen.length})
+            </p>
+            <ul className="grid gap-1.5 md:grid-cols-2">
+              {longOpen.map((a) => (
+                <li key={a.id}>
+                  <button
+                    onClick={() => {
+                      setAanpak("Alle");
+                      setExpanded(a.id);
+                    }}
+                    className="flex w-full items-center gap-2 rounded-md p-1.5 text-left text-sm hover:bg-muted"
+                  >
+                    <span className="min-w-0 flex-1 truncate font-medium">{a.title}</span>
+                    <PriorityBadge priority={a.priority} />
+                    <span className="shrink-0 text-xs font-semibold text-destructive">
+                      {Math.floor((Date.now() - new Date(a.createdAt).getTime()) / 604800000)} wkn
+                    </span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        <div className="grid gap-4 sm:grid-cols-3">
+          {(
+            [
+              { aanpak: "Actie / Just Do It", icon: Zap, hint: "Direct oplosbaar, klein en snel" },
+              { aanpak: "PDCA / 6S", icon: RefreshCw, hint: "Plan-Do-Check-Act en werkplekorganisatie" },
+              { aanpak: "Change", icon: ArrowUpRight, hint: "A3 / Lean Six Sigma — structurele verandering" },
+            ] as const
+          ).map(({ aanpak: p, icon: Icon, hint }) => {
+            const items = openOf(p);
+            const overdue = items.filter((a) => isOverdue(a)).length;
+            const decision = items.filter((a) => a.status === "Wacht op besluit").length;
+            const active = aanpak === p;
+            return (
+              <button
+                key={p}
+                onClick={() => setAanpak(active ? "Alle" : p)}
+                aria-pressed={active}
+                className={cn(
+                  "group block rounded-xl border bg-card p-4 text-left shadow-card transition hover:-translate-y-0.5 hover:border-primary hover:shadow-elevated md:p-5",
+                  active && "border-primary",
+                )}
+              >
+                <div className="flex items-start justify-between gap-2">
+                  <p className="text-sm font-semibold text-muted-foreground">{p}</p>
+                  <Icon className="h-5 w-5 shrink-0 text-primary" />
+                </div>
+                <p className="mt-2 text-4xl font-bold md:text-5xl">{items.length}</p>
+                <p className="mt-1 flex items-center justify-between text-xs text-muted-foreground">
+                  <span>
+                    {hint}
+                    {(overdue > 0 || decision > 0) && (
+                      <span className="mt-1 block font-semibold text-foreground">
+                        {overdue > 0 && <span className="text-destructive">{overdue} verlopen</span>}
+                        {overdue > 0 && decision > 0 && " · "}
+                        {decision > 0 && `${decision} wacht op besluit`}
+                      </span>
+                    )}
+                  </span>
+                  {active ? (
+                    <X className="h-4 w-4" aria-label="Filter wissen" />
+                  ) : (
+                    <ChevronRight className="h-4 w-4 opacity-0 transition group-hover:opacity-100" />
+                  )}
+                </p>
+              </button>
+            );
+          })}
         </div>
 
         <div className="grid gap-4">
