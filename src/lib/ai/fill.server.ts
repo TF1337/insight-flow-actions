@@ -2,7 +2,7 @@ import { createOpenAI } from "@ai-sdk/openai";
 import { NoObjectGeneratedError, Output, streamText } from "ai";
 import { z } from "zod";
 
-import { createLovableAiGatewayRunIdFetch, getLovableAiGatewayRunId } from "./run-id.ts";
+import { createLovableAiGatewayRunIdFetch } from "./run-id.ts";
 
 const GATEWAY_URL = "https://ai.gateway.lovable.dev/v1";
 const MODEL = "openai/gpt-6-astra";
@@ -39,11 +39,10 @@ const FIELD_LABELS: Record<FillField, string> = {
 };
 
 export async function generateFieldSuggestions(
-  request: Request,
   apiKey: string,
   input: FillInput,
 ): Promise<FillResult> {
-  const runIdFetch = createLovableAiGatewayRunIdFetch(getLovableAiGatewayRunId(request));
+  const runIdFetch = createLovableAiGatewayRunIdFetch(undefined);
   const provider = createOpenAI({
     baseURL: GATEWAY_URL,
     apiKey,
@@ -83,7 +82,6 @@ export async function generateFieldSuggestions(
       model: provider.responses(MODEL),
       instructions,
       messages: [{ role: "user", content: prompt }],
-      abortSignal: request.signal,
       output: Output.object({ schema: fillSchema }),
       providerOptions: {
         openai: {
@@ -114,9 +112,6 @@ export async function generateFieldSuggestions(
       throw error;
     }
   } catch (error) {
-    if (request.signal.aborted && error instanceof Error && error.name === "AbortError") {
-      return { ok: false, error: "Het invullen is gestopt." };
-    }
     const status =
       typeof error === "object" && error !== null && "statusCode" in error
         ? Number((error as { statusCode?: unknown }).statusCode)
