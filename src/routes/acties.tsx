@@ -36,13 +36,16 @@ function ActionsPage() {
   const setAanpak = (p: string) =>
     navigate({ search: (s) => ({ ...s, aanpak: p === "Alle" ? undefined : (p as Action["priority"]) }) });
 
+  const open = useMemo(() => actions.filter((a) => a.kpi === KPI_LEVERTIJD_ZORG && !isClosed(a)), [actions]);
+  const openOf = (p: Priority) => open.filter((a) => a.priority === p);
+  const longOpen = open.filter((a) => a.status !== "Uitgevoerd" && (Date.now() - new Date(a.createdAt).getTime()) / 86400000 >= 21);
+
   const rows = useMemo(
     () =>
-      actions
-        .filter((a) => a.kpi === KPI_LEVERTIJD_ZORG && !isClosed(a))
+      open
         .filter((a) => aanpak === "Alle" || a.priority === aanpak)
         .sort((x, y) => (x.due || "9999").localeCompare(y.due || "9999")),
-    [actions, aanpak],
+    [open, aanpak],
   );
 
   return (
