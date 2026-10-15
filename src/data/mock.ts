@@ -86,6 +86,13 @@ export const MOCK_OBSERVATIONS: Observation[] = [
     reporter: "Lotte Visser",
     createdAt: isoDay(-11),
     w5h: { wie: "Heftruckchauffeurs opslag", wat: "Olielekkage op vloer", waar: "Gang C, bij stelling 14", wanneer: "Ochtenddienst", waarom: "Slang hydrauliek lekt, onderhoud uitgesteld", hoe: "Gemeld via teamleider" },
+    whys: [
+      { question: "Waarom ligt er olie op de vloer?", answer: "De hydrauliekslang van heftruck 3 lekt." },
+      { question: "Waarom lekt de slang?", answer: "De slang is versleten en had al vervangen moeten zijn." },
+      { question: "Waarom is de slang niet vervangen?", answer: "Het geplande onderhoud is uitgesteld." },
+      { question: "Waarom is het onderhoud uitgesteld?", answer: "De monteur werd op andere storingen ingezet." },
+      { question: "Waarom gebeurt dat steeds?", answer: "De onderhoudsplanning heeft geen prioriteit boven acute storingen." },
+    ],
     waaromOnbekend: false,
   },
   {
@@ -112,6 +119,13 @@ export const MOCK_OBSERVATIONS: Observation[] = [
     reporter: "Peter Bakker",
     createdAt: isoDay(-24),
     w5h: { wie: "Pickers zware artikelen", wat: "Tillen vanaf vloerniveau", waar: "Orderpick, zone zwaar", wanneer: "Hele dienst", waarom: "Geen palletheffer beschikbaar in zone", hoe: "" },
+    whys: [
+      { question: "Waarom tillen medewerkers vanaf vloerniveau?", answer: "Er is geen palletheffer beschikbaar in de zone." },
+      { question: "Waarom is er geen palletheffer?", answer: "Er zijn te weinig palletheffers voor alle zones." },
+      { question: "Waarom zijn er te weinig?", answer: "De aanschaf van extra palletheffers is uitgesteld." },
+      { question: "Waarom is de aanschaf uitgesteld?", answer: "Er is nog geen besluit genomen over het budget." },
+      { question: "Waarom is er geen besluit?", answer: "De tilbelasting is nooit als structureel knelpunt aangemeld." },
+    ],
     waaromOnbekend: false,
   },
   {
@@ -125,6 +139,13 @@ export const MOCK_OBSERVATIONS: Observation[] = [
     reporter: "Sanne de Vries",
     createdAt: isoDay(-33),
     w5h: { wie: "Inbound late dienst", wat: "Nooduitgang geblokkeerd", waar: "Inbound west", wanneer: "Na lossen", waarom: "Geen vaste bufferplek voor overloop", hoe: "Gezien tijdens ronde" },
+    whys: [
+      { question: "Waarom staan er dozen voor de nooduitgang?", answer: "Na het lossen wordt overloop tijdelijk daar neergezet." },
+      { question: "Waarom wordt overloop daar neergezet?", answer: "Er is geen vaste bufferplek voor overloop." },
+      { question: "Waarom is er geen bufferplek?", answer: "De lay-out van inbound is nooit op piekdrukte ingericht." },
+      { question: "Waarom is de lay-out daar niet op ingericht?", answer: "Er zijn geen afspraken over buffercapaciteit bij pieken." },
+      { question: "Waarom ontbreken die afspraken?", answer: "Piekdrukte is nooit meegenomen in de werkplekinrichting." },
+    ],
     waaromOnbekend: false,
   },
   {
