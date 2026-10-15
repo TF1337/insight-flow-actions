@@ -1,6 +1,6 @@
 import { Fragment, useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, ArrowUpRight, ChevronDown, ChevronRight, ChevronUp, Clock, Heart, HeartPulse, Leaf, Plus, RefreshCw, Shield, X, Zap } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, ChevronDown, ChevronRight, ChevronUp, Clock, Heart, HeartPulse, Leaf, Plus, RefreshCw, Shield, Timer, X, Zap } from "lucide-react";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { useApp } from "@/data/store";
@@ -160,6 +160,7 @@ function ActionsPage() {
           {rows.map((a) => {
             const o = observations.find((x) => x.id === a.observationId);
             const whys = o?.whys ?? [];
+            const t = TOPIC_KPI[a.topic];
             const oorzaakUitgeklapt = oorzaakOpen === a.id;
             return (
               <article key={a.id} className="overflow-hidden rounded-xl border bg-card shadow-card">
@@ -184,17 +185,18 @@ function ActionsPage() {
                     <p className="text-sm text-muted-foreground">
                       {a.owner} · {a.due ? fmtDate(a.due) : "geen termijn"} · {a.dept}
                     </p>
-                    {(() => {
-                      const t = TOPIC_KPI[a.topic];
-                      return (
-                        <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                          <t.icon className="h-3 w-3 shrink-0 text-primary" aria-hidden />
-                          <span className="font-medium">KPI {t.kpi}</span>
-                          <span aria-hidden>·</span>
-                          <span>PI {t.pi}</span>
-                        </p>
-                      );
-                    })()}
+                    <p className="flex items-center gap-1.5 text-xs font-semibold text-destructive">
+                      <Timer className="h-3 w-3 shrink-0" aria-hidden />
+                      <span className="font-medium">KPI Kwaliteit</span>
+                      <span aria-hidden>·</span>
+                      <span>PI Levertijd Zorg</span>
+                    </p>
+                    <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                      <t.icon className="h-3 w-3 shrink-0 text-primary" aria-hidden />
+                      <span className="font-medium">KPI {t.kpi}</span>
+                      <span aria-hidden>·</span>
+                      <span>PI {t.pi}</span>
+                    </p>
                     {o ? (
                       <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-0.5 text-xs">
                         {W5H_KEYS.map((k) => (
