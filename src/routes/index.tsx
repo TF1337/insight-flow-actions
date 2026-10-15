@@ -124,7 +124,7 @@ const STATUS_STYLE: Record<KpiStatus, { bar: string; text: string; icon: typeof 
   fictief: { bar: "bg-sig-oranje", text: "text-sig-oranje", icon: Minus, label: "fictief" },
 };
 
-function KpiCard({ kpi, openCount }: { kpi: Kpi; openCount?: number }) {
+function KpiCard({ kpi, openCount }: { kpi: Kpi; openCount?: number | undefined }) {
   const s = STATUS_STYLE[kpi.status];
   const Icon = s.icon;
   const body = (
