@@ -1,11 +1,18 @@
 import { Fragment, useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, ArrowUpRight, ChevronDown, ChevronRight, ChevronUp, Clock, Plus, RefreshCw, X, Zap } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, ChevronDown, ChevronRight, ChevronUp, Clock, Heart, HeartPulse, Leaf, Plus, RefreshCw, Shield, X, Zap } from "lucide-react";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { useApp } from "@/data/store";
 import { KPI_LEVERTIJD_ZORG } from "@/data/mock";
-import { W5H_KEYS, W5H_LABEL, type Action, type Priority } from "@/data/types";
+import { W5H_KEYS, W5H_LABEL, type Action, type Priority, type Topic } from "@/data/types";
+
+const TOPIC_KPI: Record<Topic, { icon: typeof Shield; kpi: string; pi: string }> = {
+  Veiligheid: { icon: Shield, kpi: "Veiligheid", pi: "Ongevallen" },
+  Welzijn: { icon: Heart, kpi: "Personeel", pi: "Ziekteverzuim" },
+  Gezondheid: { icon: HeartPulse, kpi: "Gezondheid", pi: "Ergonomie" },
+  Milieu: { icon: Leaf, kpi: "Milieu", pi: "Milieu-incidenten" },
+};
 import { daysOverdue, fmtDate, isClosed, isOverdue } from "@/lib/sentinel";
 import { OverdueBadge, PriorityBadge, StatusBadge } from "@/components/sentinel/Badges";
 import { cn } from "@/lib/utils";
