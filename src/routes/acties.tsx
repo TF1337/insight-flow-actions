@@ -32,7 +32,7 @@ function ActionsPage() {
   const { aanpak: aanpakParam } = Route.useSearch();
   const navigate = Route.useNavigate();
   const [expanded, setExpanded] = useState<string | null>(null);
-  const [verlopenOpen, setVerlopenOpen] = useState(true);
+  const [verlopenOpen, setVerlopenOpen] = useState(false);
   const aanpak = aanpakParam ?? "Alle";
   const setAanpak = (p: string) =>
     navigate({ to: "/acties", search: p === "Alle" ? {} : { aanpak: p as Action["priority"] } });
