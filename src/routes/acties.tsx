@@ -34,7 +34,7 @@ function ActionsPage() {
   const [expanded, setExpanded] = useState<string | null>(null);
   const aanpak = aanpakParam ?? "Alle";
   const setAanpak = (p: string) =>
-    navigate({ search: (s) => ({ ...s, aanpak: p === "Alle" ? undefined : (p as Action["priority"]) }) });
+    navigate({ to: "/acties", search: p === "Alle" ? {} : { aanpak: p as Action["priority"] } });
 
   const open = useMemo(() => actions.filter((a) => a.kpi === KPI_LEVERTIJD_ZORG && !isClosed(a)), [actions]);
   const openOf = (p: Priority) => open.filter((a) => a.priority === p);
