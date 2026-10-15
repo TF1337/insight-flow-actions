@@ -1,11 +1,18 @@
 import { Fragment, useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, ArrowUpRight, ChevronDown, ChevronRight, ChevronUp, Clock, Plus, RefreshCw, X, Zap } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, ChevronDown, ChevronRight, ChevronUp, Clock, Heart, HeartPulse, Leaf, Plus, RefreshCw, Shield, X, Zap } from "lucide-react";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { useApp } from "@/data/store";
 import { KPI_LEVERTIJD_ZORG } from "@/data/mock";
-import { W5H_KEYS, W5H_LABEL, type Action, type Priority } from "@/data/types";
+import { W5H_KEYS, W5H_LABEL, type Action, type Priority, type Topic } from "@/data/types";
+
+const TOPIC_KPI: Record<Topic, { icon: typeof Shield; kpi: string; pi: string }> = {
+  Veiligheid: { icon: Shield, kpi: "Veiligheid", pi: "Ongevallen" },
+  Welzijn: { icon: Heart, kpi: "Personeel", pi: "Ziekteverzuim" },
+  Gezondheid: { icon: HeartPulse, kpi: "Gezondheid", pi: "Ergonomie" },
+  Milieu: { icon: Leaf, kpi: "Milieu", pi: "Milieu-incidenten" },
+};
 import { daysOverdue, fmtDate, isClosed, isOverdue } from "@/lib/sentinel";
 import { OverdueBadge, PriorityBadge, StatusBadge } from "@/components/sentinel/Badges";
 import { cn } from "@/lib/utils";
@@ -177,6 +184,17 @@ function ActionsPage() {
                     <p className="text-sm text-muted-foreground">
                       {a.owner} · {a.due ? fmtDate(a.due) : "geen termijn"} · {a.dept}
                     </p>
+                    {(() => {
+                      const t = TOPIC_KPI[a.topic];
+                      return (
+                        <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                          <t.icon className="h-3 w-3 shrink-0 text-primary" aria-hidden />
+                          <span className="font-medium">KPI {t.kpi}</span>
+                          <span aria-hidden>·</span>
+                          <span>PI {t.pi}</span>
+                        </p>
+                      );
+                    })()}
                     {o ? (
                       <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-0.5 text-xs">
                         {W5H_KEYS.map((k) => (
