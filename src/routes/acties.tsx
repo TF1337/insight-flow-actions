@@ -1,6 +1,6 @@
 import { Fragment, useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, ArrowUpRight, ChevronRight, Clock, Plus, RefreshCw, X, Zap } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, ChevronDown, ChevronRight, ChevronUp, Clock, Plus, RefreshCw, X, Zap } from "lucide-react";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { useApp } from "@/data/store";
@@ -32,6 +32,7 @@ function ActionsPage() {
   const { aanpak: aanpakParam } = Route.useSearch();
   const navigate = Route.useNavigate();
   const [expanded, setExpanded] = useState<string | null>(null);
+  const [verlopenOpen, setVerlopenOpen] = useState(true);
   const aanpak = aanpakParam ?? "Alle";
   const setAanpak = (p: string) =>
     navigate({ to: "/acties", search: p === "Alle" ? {} : { aanpak: p as Action["priority"] } });
@@ -68,10 +69,17 @@ function ActionsPage() {
 
         {verlopen.length > 0 && (
           <section className="rounded-xl border border-destructive/40 bg-card p-3 shadow-card">
-            <p className="mb-2 flex items-center gap-2 text-sm font-bold">
+            <Button
+              variant="ghost"
+              className="h-8 w-full justify-start px-1.5 text-sm font-bold hover:bg-transparent"
+              aria-expanded={verlopenOpen}
+              onClick={() => setVerlopenOpen((v) => !v)}
+            >
               <Clock className="h-4 w-4 text-destructive" /> Verlopen ({verlopen.length})
-            </p>
-            <ul className="grid gap-1.5 md:grid-cols-2">
+              {verlopenOpen ? <ChevronUp className="ml-auto size-3.5" /> : <ChevronDown className="ml-auto size-3.5" />}
+            </Button>
+            {verlopenOpen && (
+            <ul className="mt-1 grid gap-1.5 md:grid-cols-2">
               {verlopen.map((a) => (
                 <li key={a.id}>
                   <button
@@ -90,6 +98,7 @@ function ActionsPage() {
                 </li>
               ))}
             </ul>
+            )}
           </section>
         )}
 
