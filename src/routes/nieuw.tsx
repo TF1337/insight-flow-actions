@@ -1,10 +1,11 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useRef, useState } from "react";
+import { z } from "zod";
 import { ArrowLeft, Check, ChevronDown, ChevronUp, ImagePlus, Plus, RotateCcw, Save, Target, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useApp, uid } from "@/data/store";
 import { KPI_LEVERTIJD_ZORG, isoDay } from "@/data/mock";
-import { TOPICS, type Priority, type Topic } from "@/data/types";
+import { TOPICS, type Observation, type Priority, type Topic } from "@/data/types";
 import { assignees, currentUser, emptyForm, examples, kpiMeasures, type CoachForm } from "@/data/examples";
 import { cn } from "@/lib/utils";
 
@@ -19,6 +20,9 @@ export const Route = createFileRoute("/nieuw")({
       { name: "twitter:card", content: "summary" },
     ],
   }),
+  validateSearch: z.object({
+    actie: z.string().optional(),
+  }),
   component: NewActionPage,
 });
 
@@ -27,6 +31,21 @@ const AANPAKKEN: Priority[] = ["Actie / Just Do It", "PDCA / 6S", "Change"];
 
 function FieldLabel({ children }: { children: React.ReactNode }) {
   return <span className="mb-2 flex items-center gap-1.5 text-[11px] font-bold tracking-wide text-muted-foreground uppercase">{children}</span>;
+}
+
+function formFromObservation(o: Observation): CoachForm {
+  return {
+    tag: o.topic,
+    indicators: [],
+    description: o.description,
+    photo: o.photo ?? "",
+    photoLabel: o.title,
+    where: o.w5h.waar,
+    what: o.w5h.wat,
+    why: o.w5h.waarom,
+    how: o.w5h.hoe,
+    whys: o.whys && o.whys.length > 0 ? o.whys : emptyForm.whys,
+  };
 }
 
 function NewActionPage() {
