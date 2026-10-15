@@ -84,9 +84,9 @@ const LTC: Category[] = [
     kpis: [
       {
         title: "Levertijd Zorg",
-        value: "98,4%",
+        value: "78,5%",
         norm: "Norm 98%",
-        status: "op norm",
+        status: "aandacht",
         linkedActies: true,
         bullets: ["Outbound vóór 18u: 98,5%", "Inbound na 12u: 98,1%", "Orders in Full: 99,1% · norm 99%"],
       },
