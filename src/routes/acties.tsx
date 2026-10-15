@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useApp } from "@/data/store";
 import { KPI_LEVERTIJD_ZORG } from "@/data/mock";
 import { W5H_KEYS, W5H_LABEL, type Action, type Priority } from "@/data/types";
-import { fmtDate, isClosed, isOverdue } from "@/lib/sentinel";
+import { daysOverdue, fmtDate, isClosed, isOverdue } from "@/lib/sentinel";
 import { OverdueBadge, PriorityBadge, StatusBadge } from "@/components/sentinel/Badges";
 import { cn } from "@/lib/utils";
 
@@ -38,7 +38,7 @@ function ActionsPage() {
 
   const open = useMemo(() => actions.filter((a) => a.kpi === KPI_LEVERTIJD_ZORG && !isClosed(a)), [actions]);
   const openOf = (p: Priority) => open.filter((a) => a.priority === p);
-  const longOpen = open.filter((a) => a.status !== "Uitgevoerd" && (Date.now() - new Date(a.createdAt).getTime()) / 86400000 >= 21);
+  const verlopen = open.filter((a) => isOverdue(a));
 
   const rows = useMemo(
     () =>
@@ -66,13 +66,13 @@ function ActionsPage() {
           </Button>
         </div>
 
-        {longOpen.length > 0 && (
+        {verlopen.length > 0 && (
           <section className="rounded-xl border border-destructive/40 bg-card p-3 shadow-card">
             <p className="mb-2 flex items-center gap-2 text-sm font-bold">
-              <Clock className="h-4 w-4 text-destructive" /> Al meerdere weken open ({longOpen.length})
+              <Clock className="h-4 w-4 text-destructive" /> Verlopen ({verlopen.length})
             </p>
             <ul className="grid gap-1.5 md:grid-cols-2">
-              {longOpen.map((a) => (
+              {verlopen.map((a) => (
                 <li key={a.id}>
                   <button
                     onClick={() => {
@@ -84,7 +84,7 @@ function ActionsPage() {
                     <span className="min-w-0 flex-1 truncate font-medium">{a.title}</span>
                     <PriorityBadge priority={a.priority} />
                     <span className="shrink-0 text-xs font-semibold text-destructive">
-                      {Math.floor((Date.now() - new Date(a.createdAt).getTime()) / 604800000)} wkn
+                      {daysOverdue(a)} {daysOverdue(a) > 1 ? "dgn" : "dag"} verlopen
                     </span>
                   </button>
                 </li>
