@@ -4,15 +4,19 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Slider } from "@/components/ui/slider";
 import { piShare, piWeight } from "@/lib/pi-weights";
 import { cn } from "@/lib/utils";
+import { relevantMeasures } from "@/data/examples";
+import type { Topic } from "@/data/types";
 
-export function AnalysisScore({ value, onChange, disabled, indicators, weights, onWeightsChange }: {
+export function AnalysisScore({ value, onChange, disabled, topic, indicators: selectedIndicators, weights, onWeightsChange }: {
   value: number | null;
   onChange: (value: number | null) => void;
   disabled: boolean;
+  topic: Topic;
   indicators: string[];
   weights: Record<string, number>;
   onWeightsChange: (weights: Record<string, number>) => void;
 }) {
+  const indicators = relevantMeasures(topic, selectedIndicators);
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -36,7 +40,7 @@ export function AnalysisScore({ value, onChange, disabled, indicators, weights, 
         </div>
         <div className="mt-4 border-t pt-4">
           <div className="flex items-center justify-between gap-2">
-            <h3 className="text-sm font-semibold">PI-gewichtenmatrix</h3>
+            <h3 className="text-sm font-semibold">PI-gewichtenmatrix · {topic}</h3>
             <Button variant="ghost" size="icon" disabled={disabled || Object.keys(weights).length === 0} aria-label="PI-weging herstellen" title="PI-weging herstellen" onClick={() => onWeightsChange({})}><RotateCcw className="size-3.5" /></Button>
           </div>
           <div className="mt-2 flex justify-between text-[11px] text-muted-foreground"><span>0 · geen gewicht</span><span>5 · hoogste gewicht</span></div>
