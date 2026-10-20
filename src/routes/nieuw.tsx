@@ -237,7 +237,7 @@ function NewActionPage() {
                 {shownPhoto ? (
                   <>
                     <img src={shownPhoto} alt={photo ? "Geüploade observatie" : form.photoLabel} className="h-full w-full object-cover" />
-                    <span className="absolute bottom-3 left-3 text-[11px] text-primary-foreground drop-shadow">
+                    <span className="absolute bottom-3 left-3 max-w-[calc(100%-13rem)] truncate text-[11px] text-primary-foreground drop-shadow">
                       {photo ? "Jouw observatie" : form.photoLabel}
                     </span>
                   </>
