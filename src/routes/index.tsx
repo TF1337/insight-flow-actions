@@ -9,9 +9,9 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "KPI-Dashboard Logistieke Operatie" },
-      { name: "description", content: "Operationele KPI's en procesindicatoren voor OVM en LTC, met actielijst per KPI." },
+      { name: "description", content: "Operationele KPI's en procesindicatoren voor OFM en LDC, met actielijst per KPI." },
       { property: "og:title", content: "KPI-Dashboard Logistieke Operatie" },
-      { property: "og:description", content: "Operationele KPI's en procesindicatoren voor OVM en LTC, met actielijst per KPI." },
+      { property: "og:description", content: "Operationele KPI's en procesindicatoren voor OFM en LDC, met actielijst per KPI." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -45,9 +45,9 @@ const OVM: Category[] = [
     name: "Kwaliteit",
     tone: "bg-surface-steel",
     kpis: [
-      { title: "Retouren", value: "6,4 d", norm: "Norm 7 dagen", status: "gunstig", bullets: ["Retouren binnen norm · leeftijd retouren"] },
-      { title: "Inbound doorlooptijd", value: "19 u", norm: "Norm <24 uur", status: "gunstig", bullets: ["Leveringen na ontvangst GI binnen 24 uur op voorraad"] },
-      { title: "HFV doorlooptijd", value: "8,6 u", norm: "Norm nog te bepalen", status: "fictief", bullets: ["Vrijgave tot dock · INFD / PFN-QIL"] },
+      { title: "Retouren", value: "6,4 d", norm: "Norm 7 dagen", status: "gunstig", bullets: ["Retouren binnen SLA · leeftijd retouren"] },
+      { title: "Inbound doorlooptijd", value: "19 u", norm: "Norm <24 uur", status: "gunstig", bullets: ["Leveringen na ontvangst IG binnen 24 uur op voorraad"] },
+      { title: "HBV doorlooptijd", value: "8,6 u", norm: "Norm nog te bepalen", status: "fictief", bullets: ["Vrijgave tot dock · INCD / PRN-KIL"] },
       { title: "Klantorders", value: "98,7%", norm: "Norm nog te bepalen", status: "fictief", bullets: ["On time: 98,7%", "In full: 99,2%"] },
     ],
   },
@@ -56,7 +56,7 @@ const OVM: Category[] = [
     tone: "bg-topic-p",
     kpis: [
       { title: "Retouren Index", value: "97%", norm: "Norm <100%", status: "gunstig" },
-      { title: "OVM Index", value: "97%", norm: "Norm <100%", status: "gunstig", bullets: ["Directe uren index: 96%"] },
+      { title: "OFM Index", value: "97%", norm: "Norm <100%", status: "gunstig", bullets: ["Directe uren index: 96%"] },
     ],
   },
   {
@@ -83,7 +83,7 @@ const LTC: Category[] = [
     tone: "bg-surface-steel",
     kpis: [
       {
-        title: "Levertijd Zorg",
+        title: "SLA Healthcare",
         value: "78,5%",
         norm: "Norm 98%",
         status: "aandacht",
@@ -91,11 +91,11 @@ const LTC: Category[] = [
         bullets: ["Outbound vóór 18u: 98,5%", "Inbound na 12u: 98,1%", "Orders in Full: 99,1% · norm 99%"],
       },
       {
-        title: "Levertijd Print",
+        title: "SLA Printlogistiek",
         value: "95,6%",
         norm: "Norm 95%",
         status: "op norm",
-        bullets: ["Stock zelfde dag: 95,8%", "Print dag na laatste PG-scan: 95,4%", "Orders in Full: 99,0% · norm 99%"],
+        bullets: ["Stock zelfde dag: 95,8%", "Print dag na laatste PF-scan: 95,4%", "Orders in Full: 99,0% · norm 99%"],
       },
     ],
   },
@@ -103,8 +103,8 @@ const LTC: Category[] = [
     name: "Productiviteit",
     tone: "bg-topic-p",
     kpis: [
-      { title: "FPL Index", value: "97%", norm: "Norm <100%", status: "gunstig", bullets: ["FPI direct: 97%"] },
-      { title: "Zorg Index", value: "97%", norm: "Norm <100%", status: "gunstig" },
+      { title: "WPL Index", value: "97%", norm: "Norm <100%", status: "gunstig", bullets: ["WPI direct: 97%"] },
+      { title: "Healthcare Index", value: "97%", norm: "Norm <100%", status: "gunstig" },
     ],
   },
   {
@@ -162,7 +162,7 @@ function KpiCard({ kpi, openCount }: { kpi: Kpi; openCount?: number | undefined 
   );
   if (kpi.linkedActies) {
     return (
-      <Link to="/acties" aria-label="Bekijk open acties onder Levertijd Zorg">
+      <Link to="/acties" aria-label="Bekijk open acties onder SLA Healthcare">
         {body}
       </Link>
     );
@@ -205,8 +205,8 @@ function Dashboard() {
         </h1>
       </header>
       <main className="mx-auto grid max-w-6xl gap-8 px-4 py-8 lg:grid-cols-2">
-        <SiteColumn name="OVM" categories={OVM} />
-        <SiteColumn name="LTC" categories={LTC} openCount={openCount} />
+        <SiteColumn name="OFM" categories={OVM} />
+        <SiteColumn name="LDC" categories={LTC} openCount={openCount} />
       </main>
       <footer className="pb-8 text-center text-xs text-muted-foreground">
         ▲ gunstig / op norm · ▼ aandacht · → norm nog te bepalen. Alle waarden en trends in dit ontwerp zijn fictief.
