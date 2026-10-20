@@ -37,7 +37,7 @@ export const STATUS_TONE: Record<Status, string> = {
 
 export const TOPIC_TONE: Record<Topic, string> = {
   Veiligheid: "bg-topic-v",
-  Welzijn: "bg-topic-k",
-  Gezondheid: "bg-topic-p",
-  Milieu: "bg-topic-m",
+  Kwaliteit: "bg-topic-k",
+  Productiviteit: "bg-topic-p",
+  Personeel: "bg-topic-m",
 };

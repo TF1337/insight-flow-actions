@@ -5,10 +5,10 @@ import olielekkageFoto from "@/assets/olielekkage.jpg";
 import tillenFoto from "@/assets/zwaar-tillen.jpg";
 
 export const kpiMeasures: Record<Topic, string[]> = {
-  Veiligheid: ["Ongevallen", "Kwaliteitsafwijkingen", "Doorlooptijd"],
-  Gezondheid: ["Klachten", "Tilbelasting", "Hulpmiddelgebruik"],
-  Welzijn: ["Ziekteverzuim", "Bezetting", "Output", "Werkdruk"],
-  Milieu: ["Lekkages", "Energieverbruik", "Afval"],
+  Veiligheid: ["Gedragsregels", "Aantal incidenten", "Near misses: 30 dagen"],
+  Kwaliteit: ["Retouren binnen SLA", "Leeftijd retouren", "Inbound doorlooptijd", "HBV doorlooptijd", "Outbound vóór 18u", "Inbound na 12u", "Orders in Full", "Stock zelfde dag", "Print dag na laatste PF-scan"],
+  Productiviteit: ["Retouren Index", "OFM Index", "WPL Index", "Healthcare Index", "WPI direct"],
+  Personeel: ["Ziekteverzuim", "Lang verzuim", "Verhouding vast / flex", "Aandeel flex"],
 };
 
 export type Why = { question: string; answer: string };
@@ -96,10 +96,10 @@ const tillen: Omit<CoachForm, "tag" | "indicators"> = {
 };
 
 export const examples: CoachForm[] = [
-  { tag: "Milieu", indicators: ["Energieverbruik"], ...example },
-  { tag: "Veiligheid", indicators: ["Ongevallen"], ...nooduitgang },
-  { tag: "Milieu", indicators: ["Lekkages"], ...olielekkage },
-  { tag: "Gezondheid", indicators: ["Klachten"], ...tillen },
+  { tag: "Kwaliteit", indicators: [], ...example },
+  { tag: "Veiligheid", indicators: ["Gedragsregels"], ...nooduitgang },
+  { tag: "Veiligheid", indicators: ["Aantal incidenten"], ...olielekkage },
+  { tag: "Personeel", indicators: ["Ziekteverzuim"], ...tillen },
 ];
 
 export const emptyForm: CoachForm = {

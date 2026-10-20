@@ -11,3 +11,4 @@
 
 - Photo analysis uses a first-party TanStack HTTP route and server-only AI SDK helpers with streamed structured output, so photo contents and secrets stay off public clients and no observations are automatically persisted.
 - Apply AI analysis through the client-safe form merger, preserving zone, reporter, timestamp, subject and assignment; zones use a shared standard list so examples and uploads behave consistently.
+- Observation types use the shared TOPICS tuple for form choices, typed records and AI request validation, preventing category drift across reporting flows.

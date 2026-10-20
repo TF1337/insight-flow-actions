@@ -1,5 +1,5 @@
-export type Topic = "Veiligheid" | "Welzijn" | "Gezondheid" | "Milieu";
-export const TOPICS: Topic[] = ["Veiligheid", "Welzijn", "Gezondheid", "Milieu"];
+export const TOPICS = ["Veiligheid", "Kwaliteit", "Productiviteit", "Personeel"] as const;
+export type Topic = (typeof TOPICS)[number];
 
 export type Signal = "groen" | "oranje" | "rood";
 

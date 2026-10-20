@@ -1,6 +1,6 @@
 import { Fragment, useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, ArrowUpRight, ChevronDown, ChevronRight, ChevronUp, Clock, Heart, HeartPulse, Leaf, Plus, RefreshCw, Shield, X, Zap } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, ChevronDown, ChevronRight, ChevronUp, Clock, Gauge, Users, CheckCircle, Plus, RefreshCw, Shield, X, Zap } from "lucide-react";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { useApp } from "@/data/store";
@@ -9,9 +9,9 @@ import { W5H_KEYS, W5H_LABEL, type Action, type Priority, type Topic } from "@/d
 
 const TOPIC_KPI: Record<Topic, { icon: typeof Shield; kpi: string; pi: string }> = {
   Veiligheid: { icon: Shield, kpi: "Aantal incidenten", pi: "Near misses: 30 dagen" },
-  Welzijn: { icon: Heart, kpi: "Ziekteverzuim", pi: "Lang verzuim" },
-  Gezondheid: { icon: HeartPulse, kpi: "Verhouding vast / flex", pi: "Aandeel flex" },
-  Milieu: { icon: Leaf, kpi: "Retouren", pi: "Retouren binnen SLA" },
+  Kwaliteit: { icon: CheckCircle, kpi: "SLA Healthcare", pi: "Orders in Full" },
+  Productiviteit: { icon: Gauge, kpi: "WPL Index", pi: "WPI direct" },
+  Personeel: { icon: Users, kpi: "Ziekteverzuim", pi: "Lang verzuim" },
 };
 import { daysOverdue, fmtDate, isClosed, isOverdue } from "@/lib/sentinel";
 import { OverdueBadge, PriorityBadge, StatusBadge } from "@/components/sentinel/Badges";
