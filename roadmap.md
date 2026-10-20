@@ -10,3 +10,7 @@
 # Fictieve PI-weging
 - [x] Aan de score een instelbare PI-gewichtenmatrix toevoegen voor het fictieve LoRA-scenario.
 - [x] De weging, onderwerpkeuze en tijdelijke toestand testen.
+
+# Score bij voorbeeldmeldingen
+- [ ] Score beschikbaar maken bij alle voorbeelden en geopende bestaande meldingen.
+- [ ] Meetwaarden in het scoremenu beperken tot het gekozen onderwerp en testen.

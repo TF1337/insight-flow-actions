@@ -11,6 +11,12 @@ export const kpiMeasures: Record<Topic, string[]> = {
   Personeel: ["Ziekteverzuim", "Lang verzuim", "Verhouding vast / flex", "Aandeel flex"],
 };
 
+export function relevantMeasures(topic: Topic, selected: string[]): string[] {
+  const measures = kpiMeasures[topic];
+  const relevant = measures.filter(indicator => selected.includes(indicator));
+  return relevant.length ? relevant : measures;
+}
+
 export type Why = { question: string; answer: string };
 
 export type CoachForm = {

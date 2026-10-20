@@ -472,8 +472,9 @@ function NewActionPage() {
               </p>
             )}
           </fieldset>
-          {!editing && (
-            <div className="flex flex-wrap items-center gap-3 px-6 pb-5" aria-live="polite">
+          <div className="flex flex-wrap items-center gap-3 px-6 pb-5" aria-live="polite">
+            {!editing && (
+              <>
               {analysing ? (
                 <>
                   <span role="status" className="inline-flex items-center gap-2 text-sm text-muted-foreground"><LoaderCircle className="size-4 animate-spin motion-reduce:animate-none" /> Foto analyseren…</span>
@@ -482,10 +483,11 @@ function NewActionPage() {
               ) : (
                 <Button variant="outline" disabled={!shownPhoto} onClick={analyse}><Sparkles /> Analyseer met AI</Button>
               )}
-              <AnalysisScore value={analysisScore} onChange={setAnalysisScore} disabled={analysing || !shownPhoto} indicators={form.indicators.length ? measures.filter(item => form.indicators.includes(item)) : measures} weights={piWeights} onWeightsChange={setPiWeights} />
+              </>
+            )}
+              <AnalysisScore value={analysisScore} onChange={setAnalysisScore} disabled={analysing || !shownPhoto} topic={form.tag} indicators={form.indicators} weights={piWeights} onWeightsChange={setPiWeights} />
               {aiDone && <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground"><Check className="size-3.5" /> Analyse ingevuld · niet opgeslagen</span>}
             </div>
-          )}
           <div className="flex items-center justify-between gap-3 border-t bg-card px-6 py-4">
             <Button variant="ghost" asChild>
               <Link to="/acties">Annuleren</Link>
