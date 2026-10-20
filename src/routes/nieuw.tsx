@@ -78,6 +78,7 @@ function NewActionPage() {
   const [analysing, setAnalysing] = useState(false);
   const [aiDone, setAiDone] = useState(false);
   const [analysisScore, setAnalysisScore] = useState<number | null>(null);
+  const [piWeights, setPiWeights] = useState<Record<string, number>>({});
   const analysisRequest = useRef<AbortController | null>(null);
   const file = useRef<HTMLInputElement>(null);
   const camera = useRef<HTMLInputElement>(null);
@@ -94,7 +95,7 @@ function NewActionPage() {
     }
     analysisRequest.current?.abort();
     const reader = new FileReader();
-    reader.onload = () => { setPhoto(String(reader.result)); setError(""); setAiDone(false); setAnalysisScore(null); };
+    reader.onload = () => { setPhoto(String(reader.result)); setError(""); setAiDone(false); setAnalysisScore(null); setPiWeights({}); };
     reader.onerror = () => setError("De foto kon niet worden gelezen.");
     reader.readAsDataURL(selected);
   }
@@ -107,6 +108,7 @@ function NewActionPage() {
     setAnalysing(true);
     setAiDone(false);
     setAnalysisScore(null);
+    setPiWeights({});
     setError("");
     try {
       const analysis = await analysePhoto(image, form.where, form.tag, controller.signal);
@@ -132,6 +134,7 @@ function NewActionPage() {
     analysisRequest.current?.abort();
     setAiDone(false);
     setAnalysisScore(null);
+    setPiWeights({});
     setForm({ ...(next ?? emptyForm), where: form.where });
     setExampleIndex(nextIndex);
     setPhoto(null);
@@ -250,7 +253,7 @@ function NewActionPage() {
                     <ImagePlus /> {shownPhoto ? "Vervangen" : "Foto toevoegen"}
                   </Button>
                   {photo && (
-                    <Button size="icon" variant="secondary" aria-label="Foto verwijderen" onClick={() => { setPhoto(null); setAiDone(false); setAnalysisScore(null); }}>
+                    <Button size="icon" variant="secondary" aria-label="Foto verwijderen" onClick={() => { setPhoto(null); setAiDone(false); setAnalysisScore(null); setPiWeights({}); }}>
                       <X />
                     </Button>
                   )}
@@ -270,6 +273,7 @@ function NewActionPage() {
                     aria-pressed={form.tag === t}
                     onClick={() => {
                       setForm((prev) => ({ ...prev, tag: t, indicators: [] }));
+                      setPiWeights({});
                       setError("");
                     }}
                   >
@@ -478,7 +482,7 @@ function NewActionPage() {
               ) : (
                 <Button variant="outline" disabled={!shownPhoto} onClick={analyse}><Sparkles /> Analyseer met AI</Button>
               )}
-              <AnalysisScore value={analysisScore} onChange={setAnalysisScore} disabled={analysing || !shownPhoto} />
+              <AnalysisScore value={analysisScore} onChange={setAnalysisScore} disabled={analysing || !shownPhoto} indicators={form.indicators.length ? measures.filter(item => form.indicators.includes(item)) : measures} weights={piWeights} onWeightsChange={setPiWeights} />
               {aiDone && <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground"><Check className="size-3.5" /> Analyse ingevuld · niet opgeslagen</span>}
             </div>
           )}
