@@ -8,10 +8,10 @@ import { KPI_LEVERTIJD_ZORG } from "@/data/mock";
 import { W5H_KEYS, W5H_LABEL, type Action, type Priority, type Topic } from "@/data/types";
 
 const TOPIC_KPI: Record<Topic, { icon: typeof Shield; kpi: string; pi: string }> = {
-  Veiligheid: { icon: Shield, kpi: "Veiligheid", pi: "Ongevallen" },
-  Welzijn: { icon: Heart, kpi: "Personeel", pi: "Ziekteverzuim" },
-  Gezondheid: { icon: HeartPulse, kpi: "Gezondheid", pi: "Ergonomie" },
-  Milieu: { icon: Leaf, kpi: "Milieu", pi: "Milieu-incidenten" },
+  Veiligheid: { icon: Shield, kpi: "Aantal incidenten", pi: "Near misses: 30 dagen" },
+  Welzijn: { icon: Heart, kpi: "Ziekteverzuim", pi: "Lang verzuim" },
+  Gezondheid: { icon: HeartPulse, kpi: "Verhouding vast / flex", pi: "Aandeel flex" },
+  Milieu: { icon: Leaf, kpi: "Retouren", pi: "Retouren binnen SLA" },
 };
 import { daysOverdue, fmtDate, isClosed, isOverdue } from "@/lib/sentinel";
 import { OverdueBadge, PriorityBadge, StatusBadge } from "@/components/sentinel/Badges";
@@ -20,10 +20,10 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/acties")({
   head: () => ({
     meta: [
-      { title: "Actielijst — Levertijd Zorg" },
-      { name: "description", content: "Openstaande acties onder de KPI Levertijd Zorg, met foto en 5W1H-analyse." },
-      { property: "og:title", content: "Actielijst — Levertijd Zorg" },
-      { property: "og:description", content: "Openstaande acties onder de KPI Levertijd Zorg, met foto en 5W1H-analyse." },
+      { title: "Actielijst — SLA Healthcare" },
+      { name: "description", content: "Openstaande acties onder de KPI SLA Healthcare, met foto en 5W1H-analyse." },
+      { property: "og:title", content: "Actielijst — SLA Healthcare" },
+      { property: "og:description", content: "Openstaande acties onder de KPI SLA Healthcare, met foto en 5W1H-analyse." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -64,7 +64,7 @@ function ActionsPage() {
             <Link to="/" className="inline-flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-foreground">
               <ArrowLeft className="h-4 w-4" /> KPI-dashboard
             </Link>
-            <h1 className="mt-1 text-3xl font-bold">Levertijd Zorg · actielijst</h1>
+            <h1 className="mt-1 text-3xl font-bold">SLA Healthcare · actielijst</h1>
             <p className="text-muted-foreground">{rows.length} open acties onder deze KPI</p>
           </div>
           <Button asChild>

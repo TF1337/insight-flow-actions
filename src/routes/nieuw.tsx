@@ -12,10 +12,10 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/nieuw")({
   head: () => ({
     meta: [
-      { title: "Nieuwe actie — Levertijd Zorg" },
-      { name: "description", content: "Maak een nieuwe actie aan met foto en 5W1H-analyse onder de KPI Levertijd Zorg." },
-      { property: "og:title", content: "Nieuwe actie — Levertijd Zorg" },
-      { property: "og:description", content: "Maak een nieuwe actie aan met foto en 5W1H-analyse onder de KPI Levertijd Zorg." },
+      { title: "Nieuwe actie — SLA Healthcare" },
+      { name: "description", content: "Maak een nieuwe actie aan met foto en 5W1H-analyse onder de KPI SLA Healthcare." },
+      { property: "og:title", content: "Nieuwe actie — SLA Healthcare" },
+      { property: "og:description", content: "Maak een nieuwe actie aan met foto en 5W1H-analyse onder de KPI SLA Healthcare." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -149,7 +149,7 @@ function NewActionPage() {
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
           <div>
             <Link to="/acties" className="inline-flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-foreground">
-              <ArrowLeft className="h-4 w-4" /> Actielijst Levertijd Zorg
+              <ArrowLeft className="h-4 w-4" /> Actielijst SLA Healthcare
             </Link>
             <h1 className="mt-1 text-3xl font-bold">{editing ? "Actie bewerken" : "Nieuwe actie"}</h1>
           </div>

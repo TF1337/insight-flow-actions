@@ -8,7 +8,7 @@ import imgTillen from "@/assets/demo-tillen.jpg";
 import imgNooduitgang from "@/assets/demo-nooduitgang.jpg";
 import imgVerlichting from "@/assets/demo-verlichting.jpg";
 
-export const KPI_LEVERTIJD_ZORG = "Levertijd Zorg";
+export const KPI_LEVERTIJD_ZORG = "SLA Healthcare";
 
 export const DEPTS = ["Inbound", "Opslag", "Orderpick", "Pakstraat", "Outbound", "Retouren"];
 export const PEOPLE = [
