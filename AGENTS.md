@@ -12,4 +12,4 @@
 - Photo analysis uses a first-party TanStack HTTP route and server-only AI SDK helpers with streamed structured output, so photo contents and secrets stay off public clients and no observations are automatically persisted.
 - Apply AI analysis through the client-safe form merger, preserving zone, reporter, timestamp, subject and assignment; zones use a shared standard list so examples and uploads behave consistently.
 - Observation types use the shared TOPICS tuple for form choices, typed records and AI request validation, preventing category drift across reporting flows.
-- Analysis ratings are temporary form state in a dedicated control, reset on photo/example replacement or a new analysis; no persistence or model-training connection is implied.
+- Analysis ratings and PI weightings are temporary form state in a dedicated control, reset on photo/example replacement or a new analysis; PI weights use a client-safe calculation module and the current subject's selected indicators (or all when none are selected), keeping demo weighting separate from measured values, persistence and model training.
