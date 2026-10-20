@@ -1,13 +1,15 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { z } from "zod";
-import { ArrowLeft, Check, ChevronDown, ChevronUp, ImagePlus, Plus, RotateCcw, Save, Target, X } from "lucide-react";
+import { ArrowLeft, Camera, Check, ChevronDown, ChevronUp, ImagePlus, LoaderCircle, Plus, RotateCcw, Save, Sparkles, Square, Target, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useApp, uid } from "@/data/store";
 import { KPI_LEVERTIJD_ZORG, isoDay } from "@/data/mock";
 import { TOPICS, type Observation, type Priority, type Topic } from "@/data/types";
 import { assignees, currentUser, emptyForm, examples, kpiMeasures, type CoachForm } from "@/data/examples";
 import { cn } from "@/lib/utils";
+import { applyPhotoAnalysis, ZONES } from "@/lib/photo-analysis";
+import { analysePhoto } from "@/lib/analyse-photo";
 
 export const Route = createFileRoute("/nieuw")({
   head: () => ({
@@ -54,7 +56,7 @@ function NewActionPage() {
   const { actions, observations, upsertAction, upsertObservation } = useApp();
   const editing = editId ? actions.find((a) => a.id === editId) : undefined;
   const editingObs = editing?.observationId ? observations.find((o) => o.id === editing.observationId) : undefined;
-  const [form, setForm] = useState<CoachForm>(() => (editingObs ? formFromObservation(editingObs) : (examples[0] ?? emptyForm)));
+  const [form, setForm] = useState<CoachForm>(() => (editingObs ? formFromObservation(editingObs) : { ...(examples[0] ?? emptyForm), where: ZONES[0] }));
   const [exampleIndex, setExampleIndex] = useState(editing ? -1 : 0);
   const isExample = exampleIndex >= 0;
   const [photo, setPhoto] = useState<string | null>(null);
@@ -71,8 +73,51 @@ function NewActionPage() {
   });
   const [expanded, setExpanded] = useState(true);
   const [error, setError] = useState("");
-  const [now] = useState(() => new Date().toLocaleString("nl-NL", { dateStyle: "medium", timeStyle: "short" }));
+  const [now, setNow] = useState("");
+  const [analysing, setAnalysing] = useState(false);
+  const [aiDone, setAiDone] = useState(false);
+  const analysisRequest = useRef<AbortController | null>(null);
   const file = useRef<HTMLInputElement>(null);
+  const camera = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    setNow(new Date().toLocaleString("nl-NL", { dateStyle: "medium", timeStyle: "short" }));
+    return () => analysisRequest.current?.abort();
+  }, []);
+
+  function loadPhoto(selected?: File) {
+    if (!selected) return;
+    if (!["image/jpeg", "image/png", "image/webp"].includes(selected.type) || selected.size > 4500000) {
+      setError("Kies een JPG-, PNG- of WebP-foto van maximaal 4,5 MB.");
+      return;
+    }
+    analysisRequest.current?.abort();
+    const reader = new FileReader();
+    reader.onload = () => { setPhoto(String(reader.result)); setError(""); setAiDone(false); };
+    reader.onerror = () => setError("De foto kon niet worden gelezen.");
+    reader.readAsDataURL(selected);
+  }
+
+  async function analyse() {
+    const image = photo || form.photo;
+    if (!image || analysing) return;
+    const controller = new AbortController();
+    analysisRequest.current = controller;
+    setAnalysing(true);
+    setAiDone(false);
+    setError("");
+    try {
+      const analysis = await analysePhoto(image, form.where, form.tag, controller.signal);
+      if (controller.signal.aborted) return;
+      const next = applyPhotoAnalysis(form, analysis);
+      setForm(next);
+      setExpanded(true);
+      setAiDone(true);
+    } catch (err) {
+      if (!controller.signal.aborted) setError(err instanceof Error ? err.message : "De fotoanalyse kon niet worden afgerond.");
+    } finally {
+      if (analysisRequest.current === controller) { setAnalysing(false); analysisRequest.current = null; }
+    }
+  }
 
   const update = (key: keyof Omit<CoachForm, "whys" | "indicators" | "tag">, value: string) => {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -81,7 +126,9 @@ function NewActionPage() {
 
   function reset(nextIndex: number) {
     const next = nextIndex >= 0 ? examples[nextIndex] : null;
-    setForm(next ?? emptyForm);
+    analysisRequest.current?.abort();
+    setAiDone(false);
+    setForm({ ...(next ?? emptyForm), where: form.where });
     setExampleIndex(nextIndex);
     setPhoto(null);
     setError("");
@@ -128,7 +175,7 @@ function NewActionPage() {
       deviation: form.what.trim().slice(0, 80),
       topic: form.tag,
       dept: form.where || editing?.dept || "Inbound",
-      owner: assignee ? assignee.split(" · ")[0]! : (editing?.owner ?? currentUser),
+      owner: assignee ? (assignee.split(" · ")[0] ?? currentUser) : (editing?.owner ?? currentUser),
       due: isoDay(days),
       priority: aanpak,
       status: editing?.status ?? "Open",
@@ -155,10 +202,10 @@ function NewActionPage() {
           </div>
           {!editing && (
             <div className="flex flex-wrap gap-2">
-              <Button variant="ghost" className="text-xs" onClick={() => reset((exampleIndex + 1) % examples.length)}>
+              <Button disabled={analysing} variant="ghost" className="text-xs" onClick={() => reset((exampleIndex + 1) % examples.length)}>
                 <RotateCcw /> Voorbeeld
               </Button>
-              <Button variant="outline" onClick={() => reset(-1)}>
+              <Button disabled={analysing} variant="outline" onClick={() => reset(-1)}>
                 <Plus /> Nieuwe melding
               </Button>
             </div>
@@ -166,7 +213,7 @@ function NewActionPage() {
         </div>
 
         <section className="overflow-hidden rounded-xl border bg-card shadow-card">
-          <div className="space-y-6 p-6">
+          <fieldset disabled={analysing} className="space-y-6 p-6">
             {/* Foto */}
             <div>
               <FieldLabel>Foto</FieldLabel>
@@ -176,21 +223,9 @@ function NewActionPage() {
                 accept="image/jpeg,image/png,image/webp"
                 className="hidden"
                 aria-label="Foto uploaden"
-                onChange={(e) => {
-                  const selected = e.target.files?.[0];
-                  if (!selected) return;
-                  if (!["image/jpeg", "image/png", "image/webp"].includes(selected.type) || selected.size > 4500000) {
-                    setError("Kies een JPG-, PNG- of WebP-foto van maximaal 4,5 MB.");
-                    return;
-                  }
-                  const reader = new FileReader();
-                  reader.onload = () => {
-                    setPhoto(String(reader.result));
-                    setError("");
-                  };
-                  reader.readAsDataURL(selected);
-                }}
+                onChange={(e) => { loadPhoto(e.target.files?.[0]); e.target.value = ""; }}
               />
+              <input ref={camera} type="file" accept="image/jpeg,image/png,image/webp" capture="environment" className="hidden" aria-label="Foto opnemen" onChange={(e) => { loadPhoto(e.target.files?.[0]); e.target.value = ""; }} />
               <div className="relative h-60 overflow-hidden rounded-lg bg-muted shadow-card">
                 {shownPhoto ? (
                   <>
@@ -206,6 +241,7 @@ function NewActionPage() {
                   </div>
                 )}
                 <div className="absolute right-2.5 bottom-2.5 flex gap-1.5">
+                  <Button variant="secondary" size="icon" aria-label="Foto opnemen" title="Foto opnemen" onClick={() => camera.current?.click()}><Camera /></Button>
                   <Button variant="secondary" size="sm" onClick={() => file.current?.click()}>
                     <ImagePlus /> {shownPhoto ? "Vervangen" : "Foto toevoegen"}
                   </Button>
@@ -289,16 +325,20 @@ function NewActionPage() {
               <div className="mt-4">
                 <FieldLabel>Waar</FieldLabel>
                 <input
+                  list="standaard-zones"
+                  aria-label="Waar"
                   className="w-full rounded-md border bg-card px-3 py-2 text-sm outline-none focus:border-primary"
                   value={form.where}
                   maxLength={200}
                   placeholder="Werkplek of locatie"
                   onChange={(e) => update("where", e.target.value)}
                 />
+                <datalist id="standaard-zones">{ZONES.map(zone => <option key={zone} value={zone} />)}</datalist>
               </div>
               <div className="mt-4">
                 <FieldLabel>Wat · het probleem</FieldLabel>
                 <textarea
+                  aria-label="Wat · het probleem"
                   className="w-full rounded-md border bg-card px-3 py-2 text-sm outline-none focus:border-primary"
                   rows={2}
                   maxLength={1500}
@@ -310,6 +350,7 @@ function NewActionPage() {
               <div className="mt-4">
                 <FieldLabel>Waarom · vermoedelijke grondoorzaak</FieldLabel>
                 <textarea
+                  aria-label="Waarom · vermoedelijke grondoorzaak"
                   className="w-full rounded-md border bg-card px-3 py-2 text-sm outline-none focus:border-primary"
                   rows={2}
                   maxLength={1500}
@@ -359,6 +400,7 @@ function NewActionPage() {
               <div className="mt-3">
                 <FieldLabel>Hoe · maatregel & controle</FieldLabel>
                 <textarea
+                  aria-label="Hoe · maatregel & controle"
                   className="w-full rounded-md border bg-card px-3 py-2 text-sm outline-none focus:border-primary"
                   rows={3}
                   maxLength={1500}
@@ -421,12 +463,25 @@ function NewActionPage() {
                 {error}
               </p>
             )}
-          </div>
+          </fieldset>
+          {!editing && (
+            <div className="flex flex-wrap items-center gap-3 px-6 pb-5" aria-live="polite">
+              {analysing ? (
+                <>
+                  <span role="status" className="inline-flex items-center gap-2 text-sm text-muted-foreground"><LoaderCircle className="size-4 animate-spin motion-reduce:animate-none" /> Foto analyseren…</span>
+                  <Button variant="outline" size="sm" onClick={() => analysisRequest.current?.abort()}><Square className="size-3" /> Stop</Button>
+                </>
+              ) : (
+                <Button variant="outline" disabled={!shownPhoto} onClick={analyse}><Sparkles /> Analyseer met AI</Button>
+              )}
+              {aiDone && <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground"><Check className="size-3.5" /> Analyse ingevuld · niet opgeslagen</span>}
+            </div>
+          )}
           <div className="flex items-center justify-between gap-3 border-t bg-card px-6 py-4">
             <Button variant="ghost" asChild>
               <Link to="/acties">Annuleren</Link>
             </Button>
-            <Button onClick={save}>
+            <Button disabled={analysing} onClick={save}>
               <Save /> Actie opslaan
             </Button>
           </div>
