@@ -10,6 +10,7 @@ import { assignees, currentUser, emptyForm, examples, kpiMeasures, type CoachFor
 import { cn } from "@/lib/utils";
 import { applyPhotoAnalysis, ZONES } from "@/lib/photo-analysis";
 import { analysePhoto } from "@/lib/analyse-photo";
+import { AnalysisScore } from "@/components/AnalysisScore";
 
 export const Route = createFileRoute("/nieuw")({
   head: () => ({
@@ -76,6 +77,7 @@ function NewActionPage() {
   const [now, setNow] = useState("");
   const [analysing, setAnalysing] = useState(false);
   const [aiDone, setAiDone] = useState(false);
+  const [analysisScore, setAnalysisScore] = useState<number | null>(null);
   const analysisRequest = useRef<AbortController | null>(null);
   const file = useRef<HTMLInputElement>(null);
   const camera = useRef<HTMLInputElement>(null);
@@ -92,7 +94,7 @@ function NewActionPage() {
     }
     analysisRequest.current?.abort();
     const reader = new FileReader();
-    reader.onload = () => { setPhoto(String(reader.result)); setError(""); setAiDone(false); };
+    reader.onload = () => { setPhoto(String(reader.result)); setError(""); setAiDone(false); setAnalysisScore(null); };
     reader.onerror = () => setError("De foto kon niet worden gelezen.");
     reader.readAsDataURL(selected);
   }
@@ -104,6 +106,7 @@ function NewActionPage() {
     analysisRequest.current = controller;
     setAnalysing(true);
     setAiDone(false);
+    setAnalysisScore(null);
     setError("");
     try {
       const analysis = await analysePhoto(image, form.where, form.tag, controller.signal);
@@ -128,6 +131,7 @@ function NewActionPage() {
     const next = nextIndex >= 0 ? examples[nextIndex] : null;
     analysisRequest.current?.abort();
     setAiDone(false);
+    setAnalysisScore(null);
     setForm({ ...(next ?? emptyForm), where: form.where });
     setExampleIndex(nextIndex);
     setPhoto(null);
@@ -246,7 +250,7 @@ function NewActionPage() {
                     <ImagePlus /> {shownPhoto ? "Vervangen" : "Foto toevoegen"}
                   </Button>
                   {photo && (
-                    <Button size="icon" variant="secondary" aria-label="Foto verwijderen" onClick={() => setPhoto(null)}>
+                    <Button size="icon" variant="secondary" aria-label="Foto verwijderen" onClick={() => { setPhoto(null); setAiDone(false); setAnalysisScore(null); }}>
                       <X />
                     </Button>
                   )}
@@ -474,6 +478,7 @@ function NewActionPage() {
               ) : (
                 <Button variant="outline" disabled={!shownPhoto} onClick={analyse}><Sparkles /> Analyseer met AI</Button>
               )}
+              <AnalysisScore value={analysisScore} onChange={setAnalysisScore} disabled={analysing || !shownPhoto} />
               {aiDone && <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground"><Check className="size-3.5" /> Analyse ingevuld · niet opgeslagen</span>}
             </div>
           )}
