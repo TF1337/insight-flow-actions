@@ -4,5 +4,5 @@
 - [x] Fotoanalyse testen zonder automatisch opslaan.
 
 # Oorspronkelijke observatietypes
-- [ ] Observatietypes uit de aangewezen vier keuzeknoppen bij bestaande meldingen, voorbeelden en nieuwe meldingen vervangen door Veiligheid, Kwaliteit, Productiviteit en Personeel.
-- [ ] Bijbehorende prestatieindicatoren en fotoanalyse consistent houden en testen.
+- [x] Observatietypes uit de aangewezen vier keuzeknoppen bij bestaande meldingen, voorbeelden en nieuwe meldingen vervangen door Veiligheid, Kwaliteit, Productiviteit en Personeel.
+- [x] Bijbehorende prestatieindicatoren en fotoanalyse consistent houden en testen.
