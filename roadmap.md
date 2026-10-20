@@ -2,3 +2,7 @@
 - [x] Foto-opname/upload en AI-analyse toevoegen aan nieuwe melding.
 - [x] Gekozen standaardzone behouden; Wat, Waarom, Hoe en vijf aansluitende waarom-stappen invullen.
 - [x] Fotoanalyse testen zonder automatisch opslaan.
+
+# Oorspronkelijke observatietypes
+- [ ] Observatietypes bij bestaande meldingen, voorbeelden en nieuwe meldingen gelijkmaken aan de oorspronkelijke dashboardcategorieën.
+- [ ] Bijbehorende prestatieindicatoren en fotoanalyse consistent houden en testen.
