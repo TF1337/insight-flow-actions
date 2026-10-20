@@ -12,5 +12,5 @@
 - [x] De weging, onderwerpkeuze en tijdelijke toestand testen.
 
 # Score bij voorbeeldmeldingen
-- [ ] Score beschikbaar maken bij alle voorbeelden en geopende bestaande meldingen.
-- [ ] Meetwaarden in het scoremenu beperken tot het gekozen onderwerp en testen.
+- [x] Score beschikbaar maken bij alle voorbeelden en geopende bestaande meldingen.
+- [x] Meetwaarden in het scoremenu beperken tot het gekozen onderwerp en testen.
