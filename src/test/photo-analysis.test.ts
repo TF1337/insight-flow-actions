@@ -15,9 +15,9 @@ describe("Photo analysis form rules", () => {
     expect(() => applyPhotoAnalysis(emptyForm, { ...analysis, whys: analysis.whys.slice(0, 4) })).toThrow();
   });
   it("does not replace the selected topic, photo or indicators", () => {
-    const result = applyPhotoAnalysis({ ...emptyForm, tag: "Milieu", photo: "photo.jpg", indicators: ["Energieverbruik"] }, analysis);
-    expect(result.tag).toBe("Milieu");
+    const result = applyPhotoAnalysis({ ...emptyForm, tag: "Productiviteit", photo: "photo.jpg", indicators: ["WPI direct"] }, analysis);
+    expect(result.tag).toBe("Productiviteit");
     expect(result.photo).toBe("photo.jpg");
-    expect(result.indicators).toEqual(["Energieverbruik"]);
+    expect(result.indicators).toEqual(["WPI direct"]);
   });
 });

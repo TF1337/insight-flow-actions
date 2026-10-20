@@ -1,13 +1,14 @@
 import { APICallError } from "ai";
 import { z } from "zod";
 import { analysisSchema } from "../photo-analysis";
+import { TOPICS } from "@/data/types";
 import { sdkImage } from "./media-parts.server.ts";
 import { createResponsesCall } from "./responses.server.ts";
 
 const inputSchema = z.object({
   image: z.string().max(6000100).regex(/^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+/=]+$/),
   zone: z.string().min(1).max(200),
-  topic: z.enum(["Veiligheid", "Welzijn", "Gezondheid", "Milieu"]),
+  topic: z.enum(TOPICS),
 });
 
 export const LEAN_PHOTO_PROMPT = `Je bent een Lean-coach voor werkplekobservaties. Antwoord in het Nederlands, kort, concreet, procesgericht en zonder mensen te beschuldigen.
