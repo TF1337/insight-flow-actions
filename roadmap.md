@@ -9,4 +9,4 @@
 
 # Fictieve PI-weging
 - [x] Aan de score een instelbare PI-gewichtenmatrix toevoegen voor het fictieve LoRA-scenario.
-- [ ] De weging, onderwerpkeuze en tijdelijke toestand testen.
+- [x] De weging, onderwerpkeuze en tijdelijke toestand testen.
