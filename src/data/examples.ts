@@ -5,16 +5,34 @@ import olielekkageFoto from "@/assets/olielekkage.jpg";
 import tillenFoto from "@/assets/zwaar-tillen.jpg";
 
 export const kpiMeasures: Record<Topic, string[]> = {
-  Veiligheid: ["Gedragsregels", "Aantal incidenten", "Near misses: 30 dagen"],
+  Veiligheid: ["Gedragsregels", "Incidenten", "Incidenten met letsel", "Incidenten zonder letsel", "Near misses: 30 dagen"],
   Kwaliteit: ["Retouren binnen SLA", "Leeftijd retouren", "Inbound doorlooptijd", "HBV doorlooptijd", "Outbound vóór 18u", "Inbound na 12u", "Orders in Full", "Stock zelfde dag", "Print dag na laatste PF-scan"],
   Productiviteit: ["Retouren Index", "OFM Index", "WPL Index", "Healthcare Index", "WPI direct"],
   Personeel: ["Ziekteverzuim", "Lang verzuim", "Verhouding vast / flex", "Aandeel flex"],
 };
 
+// Sub-maten die onder een bovenliggende PI vallen (bijv. Incidenten).
+export const piChildren: Record<string, string[]> = {
+  Incidenten: ["Incidenten met letsel", "Incidenten zonder letsel", "Near misses: 30 dagen"],
+};
+
+const allChildren = Object.values(piChildren).flat();
+
 export function relevantMeasures(topic: Topic, selected: string[]): string[] {
   const measures = kpiMeasures[topic];
   const relevant = measures.filter(indicator => selected.includes(indicator));
-  return relevant.length ? relevant : measures;
+  if (!relevant.length) return measures;
+  // Voeg de bovenliggende PI toe als een sub-maat geselecteerd is, en andersom.
+  const expanded = relevant.flatMap(indicator => {
+    const parent = Object.keys(piChildren).find(name => piChildren[name]?.includes(indicator));
+    const children = piChildren[indicator] ?? [];
+    return [parent, indicator, ...children].filter((item): item is string => Boolean(item));
+  });
+  return measures.filter(indicator => expanded.includes(indicator));
+}
+
+export function isSubMeasure(indicator: string): boolean {
+  return allChildren.includes(indicator);
 }
 
 export type Why = { question: string; answer: string };
