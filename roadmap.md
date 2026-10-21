@@ -19,3 +19,7 @@
 - [x] Acties verdelen (opgelost, in werking, verlopen) en open acties koppelen aan opgeloste.
 - [x] Handmatige koppeling in het actieformulier.
 - [ ] AI-voorstel voor koppelingen (wacht op akkoord gebruiker).
+
+# Volledige voorbeeldanalyses
+- [x] Alle open en opgeloste voorbeelden voorzien van volledige 5W1H en vijf aansluitende waarom-stappen.
+- [x] Analyses controleren in de actielijst en het actieformulier.
