@@ -7,6 +7,8 @@ import imgAfval from "@/assets/demo-afval.jpg";
 import imgTillen from "@/assets/demo-tillen.jpg";
 import imgNooduitgang from "@/assets/demo-nooduitgang.jpg";
 import imgVerlichting from "@/assets/demo-verlichting.jpg";
+import imgOlielekkage from "@/assets/olielekkage.jpg";
+import imgLaadstation from "@/assets/laadstation.jpg";
 
 export const KPI_LEVERTIJD_ZORG = "SLA Healthcare";
 
@@ -309,6 +311,7 @@ export const MOCK_ACTIONS: Action[] = [
   {
     id: "act-olie-oud",
     title: "Olielekkage heftruck 2: slang vervangen en lekbak standaard",
+    photo: imgOlielekkage,
     kpi: KPI_LEVERTIJD_ZORG,
     deviation: "Olielekkage heftruck gang B",
     topic: "Veiligheid",
@@ -325,6 +328,7 @@ export const MOCK_ACTIONS: Action[] = [
   {
     id: "act-scanner-oud",
     title: "Laadstation scanners verplaatst naar begin pickroute",
+    photo: imgLaadstation,
     kpi: KPI_LEVERTIJD_ZORG,
     deviation: "Handscanners leeg tijdens dienst",
     topic: "Productiviteit",
