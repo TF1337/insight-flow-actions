@@ -193,8 +193,8 @@ function ActionsPage() {
                   className="flex w-full flex-col text-left transition hover:bg-muted/40 sm:flex-row"
                   aria-label={`Actie openen in formulier: ${a.title}`}
                 >
-                  {o?.photo ? (
-                    <img src={o.photo} alt={o.title} className="h-44 w-full object-cover sm:h-auto sm:w-48" />
+                  {(o?.photo ?? a.photo) ? (
+                    <img src={(o?.photo ?? a.photo) as string} alt={o?.title ?? a.title} className="h-44 w-full object-cover sm:h-auto sm:w-48" />
                   ) : (
                     <div className="grid h-24 w-full place-items-center bg-muted text-xs text-muted-foreground sm:h-auto sm:w-48">Geen foto</div>
                   )}
