@@ -326,11 +326,11 @@ function NewActionPage() {
               <div className="grid gap-3 sm:grid-cols-2">
                 <div>
                   <FieldLabel>Wie · ingelogd</FieldLabel>
-                  <p className="text-sm">{currentUser}</p>
+                  <p className="text-sm">{editingObs?.w5h.wie ?? currentUser}</p>
                 </div>
                 <div>
                   <FieldLabel>Wanneer · automatisch</FieldLabel>
-                  <p className="text-sm">{now}</p>
+                  <p className="text-sm">{editingObs?.w5h.wanneer ?? now}</p>
                 </div>
               </div>
               <div className="mt-4">
