@@ -246,7 +246,15 @@ function ActionsPage() {
                 {linked && (
                   <div className="border-t bg-sig-groen/10 px-4 py-2 text-xs">
                     <p className="flex items-center gap-1.5 font-semibold">
-                      <span className="h-2 w-2 rounded-full bg-sig-groen" aria-hidden /> Eerder opgelost: {linked.title}
+                      <span className="h-2 w-2 rounded-full bg-sig-groen" aria-hidden />{" "}
+                      Eerder opgelost:{" "}
+                      <Link
+                        to="/nieuw"
+                        search={{ actie: linked.id }}
+                        className="underline decoration-dotted underline-offset-2 hover:text-primary"
+                      >
+                        {linked.title}
+                      </Link>
                     </p>
                     {linked.gedaan && <p className="mt-0.5 text-muted-foreground">{linked.gedaan}</p>}
                     {linked.resultaat && <p className="text-muted-foreground">Resultaat: {linked.resultaat}</p>}
