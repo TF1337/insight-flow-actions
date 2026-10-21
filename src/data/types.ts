@@ -43,6 +43,7 @@ export type Action = {
   id: string;
   title: string;
   observationId?: string | undefined;
+  linkedActionId?: string | undefined;
   kpi: string;
   deviation: string;
   topic: Topic;

@@ -8,6 +8,7 @@ import { KPI_LEVERTIJD_ZORG, isoDay } from "@/data/mock";
 import { TOPICS, type Observation, type Priority, type Topic } from "@/data/types";
 import { assignees, currentUser, emptyForm, examples, kpiMeasures, type CoachForm } from "@/data/examples";
 import { cn } from "@/lib/utils";
+import { isFinished } from "@/lib/sentinel";
 import { applyPhotoAnalysis, ZONES } from "@/lib/photo-analysis";
 import { analysePhoto } from "@/lib/analyse-photo";
 import { AnalysisScore } from "@/components/AnalysisScore";
