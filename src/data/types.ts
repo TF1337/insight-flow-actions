@@ -44,6 +44,7 @@ export type Action = {
   title: string;
   observationId?: string | undefined;
   linkedActionId?: string | undefined;
+  photo?: string | undefined;
   kpi: string;
   deviation: string;
   topic: Topic;
