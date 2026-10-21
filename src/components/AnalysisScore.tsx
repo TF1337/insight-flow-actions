@@ -4,7 +4,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Slider } from "@/components/ui/slider";
 import { piShare, piWeight } from "@/lib/pi-weights";
 import { cn } from "@/lib/utils";
-import { relevantMeasures } from "@/data/examples";
+import { isSubMeasure, relevantMeasures } from "@/data/examples";
 import type { Topic } from "@/data/types";
 
 export function AnalysisScore({ value, onChange, disabled, topic, indicators: selectedIndicators, weights, onWeightsChange }: {

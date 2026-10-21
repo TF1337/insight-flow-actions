@@ -122,7 +122,7 @@ const tillen: Omit<CoachForm, "tag" | "indicators"> = {
 export const examples: CoachForm[] = [
   { tag: "Kwaliteit", indicators: [], ...example },
   { tag: "Veiligheid", indicators: ["Gedragsregels"], ...nooduitgang },
-  { tag: "Veiligheid", indicators: ["Aantal incidenten"], ...olielekkage },
+  { tag: "Veiligheid", indicators: ["Incidenten"], ...olielekkage },
   { tag: "Personeel", indicators: ["Ziekteverzuim"], ...tillen },
 ];
 
