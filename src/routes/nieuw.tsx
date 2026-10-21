@@ -466,6 +466,7 @@ function NewActionPage() {
                     {p}
                   </Button>
                 ))}
+              </div>
             </div>
             <div>
               <FieldLabel>Eerder opgelost (koppeling)</FieldLabel>
@@ -481,6 +482,7 @@ function NewActionPage() {
                 ))}
               </select>
             </div>
+
 
 
             {error && (
