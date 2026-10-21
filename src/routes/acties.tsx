@@ -8,7 +8,7 @@ import { KPI_LEVERTIJD_ZORG } from "@/data/mock";
 import { W5H_KEYS, W5H_LABEL, type Action, type Priority, type Topic } from "@/data/types";
 
 const TOPIC_KPI: Record<Topic, { icon: typeof Shield; kpi: string; pi: string }> = {
-  Veiligheid: { icon: Shield, kpi: "Aantal incidenten", pi: "Near misses: 30 dagen" },
+  Veiligheid: { icon: Shield, kpi: "Veiligheid", pi: "Gedragsregels · Incidenten" },
   Kwaliteit: { icon: CheckCircle, kpi: "SLA Healthcare", pi: "Orders in Full" },
   Productiviteit: { icon: Gauge, kpi: "WPL Index", pi: "WPI direct" },
   Personeel: { icon: Users, kpi: "Ziekteverzuim", pi: "Lang verzuim" },
