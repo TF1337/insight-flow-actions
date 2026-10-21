@@ -8,6 +8,7 @@ import { KPI_LEVERTIJD_ZORG, isoDay } from "@/data/mock";
 import { TOPICS, type Observation, type Priority, type Topic } from "@/data/types";
 import { assignees, currentUser, emptyForm, examples, kpiMeasures, type CoachForm } from "@/data/examples";
 import { cn } from "@/lib/utils";
+import { isFinished } from "@/lib/sentinel";
 import { applyPhotoAnalysis, ZONES } from "@/lib/photo-analysis";
 import { analysePhoto } from "@/lib/analyse-photo";
 import { AnalysisScore } from "@/components/AnalysisScore";
@@ -68,6 +69,7 @@ function NewActionPage() {
     return `${nearest} dagen` as (typeof TERMIJNEN)[number];
   });
   const [aanpak, setAanpak] = useState<Priority>(editing?.priority ?? "Actie / Just Do It");
+  const [linkedId, setLinkedId] = useState(editing?.linkedActionId ?? "");
   const [assignee, setAssignee] = useState(() => {
     const match = assignees.find((p) => p.name === editing?.owner);
     return match ? `${match.name} · ${match.role}` : "";
@@ -188,6 +190,7 @@ function NewActionPage() {
       status: editing?.status ?? "Open",
       feedback: editing?.feedback ?? [],
       gedaan: editing?.gedaan ?? "",
+      linkedActionId: linkedId || undefined,
       resultaat: editing?.resultaat ?? "",
       createdAt: editing?.createdAt ?? isoDay(0),
     });
@@ -465,6 +468,22 @@ function NewActionPage() {
                 ))}
               </div>
             </div>
+            <div>
+              <FieldLabel>Eerder opgelost (koppeling)</FieldLabel>
+              <select
+                aria-label="Koppelen aan opgeloste actie"
+                value={linkedId}
+                onChange={(e) => setLinkedId(e.target.value)}
+                className="h-9 w-full rounded-md border bg-background px-2 text-sm"
+              >
+                <option value="">Geen koppeling</option>
+                {actions.filter((a) => isFinished(a) && a.id !== editing?.id).map((a) => (
+                  <option key={a.id} value={a.id}>{a.title}</option>
+                ))}
+              </select>
+            </div>
+
+
 
             {error && (
               <p role="alert" className="text-xs text-destructive">

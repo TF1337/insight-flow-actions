@@ -14,3 +14,8 @@
 # Score bij voorbeeldmeldingen
 - [x] Score beschikbaar maken bij alle voorbeelden en geopende bestaande meldingen.
 - [x] Meetwaarden in het scoremenu beperken tot het gekozen onderwerp en testen.
+# Opgeloste acties
+- [x] Tabblad Open/Opgelost in de actielijst met kleurcode groen/oranje/rood.
+- [x] Acties verdelen (opgelost, in werking, verlopen) en open acties koppelen aan opgeloste.
+- [x] Handmatige koppeling in het actieformulier.
+- [ ] AI-voorstel voor koppelingen (wacht op akkoord gebruiker).

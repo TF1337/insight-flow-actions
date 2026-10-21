@@ -26,6 +26,15 @@ export function daysOverdue(a: Action, ref: Date = today()) {
   return d > 0 ? d : 0;
 }
 
+/** Kleurcode: groen = opgelost, rood = termijn verlopen, oranje = nog in werking. */
+export function actionSignal(a: Action, ref: Date = today()): "groen" | "oranje" | "rood" {
+  if (isFinished(a)) return "groen";
+  return isOverdue(a, ref) ? "rood" : "oranje";
+}
+
+export const SIGNAL_TONE = { groen: "bg-sig-groen", oranje: "bg-sig-oranje", rood: "bg-destructive" } as const;
+export const SIGNAL_LABEL = { groen: "Opgelost", oranje: "In werking", rood: "Verlopen" } as const;
+
 
 export const STATUS_TONE: Record<Status, string> = {
   Open: "bg-status-open/15 text-foreground border-status-open/40",
