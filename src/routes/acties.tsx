@@ -13,7 +13,7 @@ const TOPIC_KPI: Record<Topic, { icon: typeof Shield; kpi: string; pi: string }>
   Productiviteit: { icon: Gauge, kpi: "WPL Index", pi: "WPI direct" },
   Personeel: { icon: Users, kpi: "Ziekteverzuim", pi: "Lang verzuim" },
 };
-import { daysOverdue, fmtDate, isClosed, isOverdue } from "@/lib/sentinel";
+import { actionSignal, daysOverdue, fmtDate, isFinished, isOverdue, SIGNAL_LABEL, SIGNAL_TONE } from "@/lib/sentinel";
 import { OverdueBadge, PriorityBadge, StatusBadge } from "@/components/sentinel/Badges";
 import { cn } from "@/lib/utils";
 
@@ -30,29 +30,35 @@ export const Route = createFileRoute("/acties")({
   }),
   validateSearch: z.object({
     aanpak: z.enum(["Actie / Just Do It", "PDCA / 6S", "Change"]).optional(),
+    tab: z.enum(["open", "opgelost"]).optional(),
   }),
   component: ActionsPage,
 });
 
 function ActionsPage() {
   const { actions, observations } = useApp();
-  const { aanpak: aanpakParam } = Route.useSearch();
+  const { aanpak: aanpakParam, tab: tabParam } = Route.useSearch();
+  const tab = tabParam ?? "open";
   const navigate = Route.useNavigate();
   const [oorzaakOpen, setOorzaakOpen] = useState<string | null>(null);
   const [verlopenOpen, setVerlopenOpen] = useState(false);
   const aanpak = aanpakParam ?? "Alle";
   const setAanpak = (p: string) =>
-    navigate({ to: "/acties", search: p === "Alle" ? {} : { aanpak: p as Action["priority"] } });
+    navigate({ to: "/acties", search: { ...(p === "Alle" ? {} : { aanpak: p as Action["priority"] }), ...(tab === "opgelost" ? { tab } : {}) } });
+  const setTab = (t: "open" | "opgelost") => navigate({ to: "/acties", search: t === "open" ? {} : { tab: t } });
 
-  const open = useMemo(() => actions.filter((a) => a.kpi === KPI_LEVERTIJD_ZORG && !isClosed(a)), [actions]);
+  const kpiActions = useMemo(() => actions.filter((a) => a.kpi === KPI_LEVERTIJD_ZORG), [actions]);
+  const openAll = kpiActions.filter((a) => !isFinished(a));
+  const solved = kpiActions.filter((a) => isFinished(a));
+  const open = tab === "open" ? openAll : solved;
   const openOf = (p: Priority) => open.filter((a) => a.priority === p);
-  const verlopen = open.filter((a) => isOverdue(a));
+  const verlopen = openAll.filter((a) => isOverdue(a));
 
   const rows = useMemo(
     () =>
       open
         .filter((a) => aanpak === "Alle" || a.priority === aanpak)
-        .sort((x, y) => (x.due || "9999").localeCompare(y.due || "9999")),
+        .sort((x, y) => (tab === "open" ? 1 : -1) * (x.due || "9999").localeCompare(y.due || "9999")),
     [open, aanpak],
   );
 
@@ -65,7 +71,7 @@ function ActionsPage() {
               <ArrowLeft className="h-4 w-4" /> KPI-dashboard
             </Link>
             <h1 className="mt-1 text-3xl font-bold">SLA Healthcare · actielijst</h1>
-            <p className="text-muted-foreground">{rows.length} open acties onder deze KPI</p>
+            <p className="text-muted-foreground">{rows.length} {tab === "open" ? "open" : "opgeloste"} acties onder deze KPI</p>
           </div>
           <Button asChild>
             <Link to="/nieuw">
@@ -74,7 +80,21 @@ function ActionsPage() {
           </Button>
         </div>
 
-        {verlopen.length > 0 && (
+        <div role="tablist" className="inline-flex rounded-lg border bg-card p-1 shadow-card">
+          {([["open", `Open (${openAll.length})`], ["opgelost", `Opgelost (${solved.length})`]] as const).map(([t, label]) => (
+            <button
+              key={t}
+              role="tab"
+              aria-selected={tab === t}
+              onClick={() => setTab(t)}
+              className={cn("rounded-md px-4 py-1.5 text-sm font-semibold", tab === t ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground")}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+
+        {tab === "open" && verlopen.length > 0 && (
           <section className="rounded-xl border border-destructive/40 bg-card p-3 shadow-card">
             <Button
               variant="ghost"
@@ -161,8 +181,12 @@ function ActionsPage() {
             const o = observations.find((x) => x.id === a.observationId);
             const whys = o?.whys ?? [];
             const oorzaakUitgeklapt = oorzaakOpen === a.id;
+            const sig = actionSignal(a);
+            const linked = a.linkedActionId ? actions.find((x) => x.id === a.linkedActionId) : undefined;
+            const linkedBy = actions.filter((x) => x.linkedActionId === a.id);
             return (
-              <article key={a.id} className="overflow-hidden rounded-xl border bg-card shadow-card">
+              <article key={a.id} className="relative overflow-hidden rounded-xl border bg-card shadow-card">
+                <span className={cn("absolute inset-y-0 left-0 z-10 w-1.5", SIGNAL_TONE[sig])} aria-hidden />
                 <Link
                   to="/nieuw"
                   search={{ actie: a.id }}
@@ -176,6 +200,10 @@ function ActionsPage() {
                   )}
                   <div className="flex-1 space-y-2 p-4">
                     <div className="flex flex-wrap gap-2">
+                      <span className="inline-flex items-center gap-1.5 text-xs font-semibold">
+                        <span className={cn("h-2.5 w-2.5 rounded-full", SIGNAL_TONE[sig])} aria-hidden />
+                        {SIGNAL_LABEL[sig]}
+                      </span>
                       <StatusBadge status={a.status} />
                       <PriorityBadge priority={a.priority} />
                       {isOverdue(a) && <OverdueBadge />}
@@ -195,6 +223,12 @@ function ActionsPage() {
                         </p>
                       );
                     })()}
+                    {isFinished(a) && (a.gedaan || a.resultaat) && (
+                      <div className="rounded-md bg-sig-groen/10 p-2 text-xs">
+                        {a.gedaan && <p><span className="font-semibold">Hoe opgelost:</span> {a.gedaan}</p>}
+                        {a.resultaat && <p><span className="font-semibold">Resultaat:</span> {a.resultaat}</p>}
+                      </div>
+                    )}
                     {o ? (
                       <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-0.5 text-xs">
                         {W5H_KEYS.map((k) => (
@@ -209,6 +243,20 @@ function ActionsPage() {
                     )}
                   </div>
                 </Link>
+                {linked && (
+                  <div className="border-t bg-sig-groen/10 px-4 py-2 text-xs">
+                    <p className="flex items-center gap-1.5 font-semibold">
+                      <span className="h-2 w-2 rounded-full bg-sig-groen" aria-hidden /> Eerder opgelost: {linked.title}
+                    </p>
+                    {linked.gedaan && <p className="mt-0.5 text-muted-foreground">{linked.gedaan}</p>}
+                    {linked.resultaat && <p className="text-muted-foreground">Resultaat: {linked.resultaat}</p>}
+                  </div>
+                )}
+                {linkedBy.length > 0 && (
+                  <p className="border-t px-4 py-2 text-xs text-muted-foreground">
+                    Komt opnieuw voor bij: <span className="font-medium text-foreground">{linkedBy.map((x) => x.title).join(", ")}</span>
+                  </p>
+                )}
                 <div className="border-t px-3 py-1.5">
                   <button
                     onClick={() => setOorzaakOpen(oorzaakUitgeklapt ? null : a.id)}
@@ -260,7 +308,7 @@ function ActionsPage() {
               </article>
             );
           })}
-          {rows.length === 0 && <p className="rounded-xl border bg-card p-10 text-center text-muted-foreground shadow-card">Geen openstaande acties voor deze aanpak.</p>}
+          {rows.length === 0 && <p className="rounded-xl border bg-card p-10 text-center text-muted-foreground shadow-card">{tab === "open" ? "Geen openstaande acties voor deze aanpak." : "Geen opgeloste acties voor deze aanpak."}</p>}
         </div>
       </main>
     </div>
