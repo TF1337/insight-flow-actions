@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { examples, isSubMeasure, kpiMeasures, relevantMeasures } from "@/data/examples";
+import { examples, kpiMeasures, relevantMeasures } from "@/data/examples";
 
-const VEILIGHEID = ["Gedragsregels", "Incidenten", "Incidenten met letsel", "Incidenten zonder letsel", "Near misses: 30 dagen"];
+const VEILIGHEID = ["Gedragsregels", "Incidenten met letsel", "Incidenten zonder letsel", "Near misses: 30 dagen"];
 
 describe("Score measures by subject", () => {
   it("only offers safety measures for a safety report, even with productivity selections", () => {
@@ -12,21 +12,16 @@ describe("Score measures by subject", () => {
     expect(relevantMeasures("Veiligheid", ["Gedragsregels", "WPI direct"])).toEqual(["Gedragsregels"]);
   });
 
-  it("expands the Incidenten PI into its sub-measures", () => {
-    expect(relevantMeasures("Veiligheid", ["Incidenten"])).toEqual([
-      "Incidenten", "Incidenten met letsel", "Incidenten zonder letsel", "Near misses: 30 dagen",
+  it("offers no separate Incidenten PI anymore", () => {
+    expect(kpiMeasures.Veiligheid).not.toContain("Incidenten");
+    expect(relevantMeasures("Veiligheid", ["Incidenten"])).toEqual(VEILIGHEID);
+  });
+
+  it("keeps the three incident measures as separate PI's", () => {
+    expect(relevantMeasures("Veiligheid", ["Incidenten met letsel", "Near misses: 30 dagen"])).toEqual([
+      "Incidenten met letsel",
+      "Near misses: 30 dagen",
     ]);
-  });
-
-  it("adds the parent PI when only a sub-measure is selected", () => {
-    expect(relevantMeasures("Veiligheid", ["Near misses: 30 dagen"])).toEqual(["Incidenten", "Near misses: 30 dagen"]);
-  });
-
-  it("marks the three incident types as sub-measures of Incidenten", () => {
-    expect(isSubMeasure("Incidenten")).toBe(false);
-    expect(isSubMeasure("Incidenten met letsel")).toBe(true);
-    expect(isSubMeasure("Incidenten zonder letsel")).toBe(true);
-    expect(isSubMeasure("Near misses: 30 dagen")).toBe(true);
   });
 
   it("offers each example's selected measures or its own subject's measures", () => {

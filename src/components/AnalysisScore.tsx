@@ -4,7 +4,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Slider } from "@/components/ui/slider";
 import { piShare, piWeight } from "@/lib/pi-weights";
 import { cn } from "@/lib/utils";
-import { isSubMeasure, relevantMeasures } from "@/data/examples";
+import { relevantMeasures } from "@/data/examples";
 import type { Topic } from "@/data/types";
 
 export function AnalysisScore({ value, onChange, disabled, topic, indicators: selectedIndicators, weights, onWeightsChange }: {
@@ -47,22 +47,16 @@ export function AnalysisScore({ value, onChange, disabled, topic, indicators: se
           <div className="mt-3 grid grid-cols-[minmax(0,1fr)_100px_40px] gap-x-3 border-b pb-2 text-[11px] font-semibold text-muted-foreground">
             <span>Prestatieindicator</span><span>Weging</span><span className="text-right">Aandeel</span>
           </div>
-          {indicators.map(indicator => {
-            const sub = isSubMeasure(indicator);
-            return (
-              <div key={indicator} className={cn("grid grid-cols-[minmax(0,1fr)_100px_40px] items-center gap-x-3 border-b py-3", sub && "bg-muted/40")}>
-                <span className={cn("break-words text-xs", sub ? "pl-4 text-muted-foreground" : "font-medium")}>
-                  {sub ? <span aria-hidden="true" className="mr-1 text-muted-foreground/60">└</span> : null}
-                  {indicator}
-                </span>
-                <div className="flex items-center gap-2">
-                  <Slider aria-label={`Weging ${indicator}`} min={0} max={5} step={1} value={[piWeight(weights, indicator)]} disabled={disabled} onValueChange={values => { const next = values[0]; if (next !== undefined) onWeightsChange({ ...weights, [indicator]: next }); }} />
-                  <span className="w-6 shrink-0 text-right text-xs tabular-nums">{piWeight(weights, indicator)}/5</span>
-                </div>
-                <span className="text-right text-xs tabular-nums">{piShare(weights, indicators, indicator)}%</span>
+          {indicators.map(indicator => (
+            <div key={indicator} className="grid grid-cols-[minmax(0,1fr)_100px_40px] items-center gap-x-3 border-b py-3">
+              <span className="break-words text-xs font-medium">{indicator}</span>
+              <div className="flex items-center gap-2">
+                <Slider aria-label={`Weging ${indicator}`} min={0} max={5} step={1} value={[piWeight(weights, indicator)]} disabled={disabled} onValueChange={values => { const next = values[0]; if (next !== undefined) onWeightsChange({ ...weights, [indicator]: next }); }} />
+                <span className="w-6 shrink-0 text-right text-xs tabular-nums">{piWeight(weights, indicator)}/5</span>
               </div>
-            );
-          })}
+              <span className="text-right text-xs tabular-nums">{piShare(weights, indicators, indicator)}%</span>
+            </div>
+          ))}
           <p className="mt-3 text-[11px] text-muted-foreground">Fictief LoRA-scenario · niet opgeslagen · geen training</p>
         </div>
       </PopoverContent>

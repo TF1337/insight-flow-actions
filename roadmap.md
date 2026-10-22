@@ -23,3 +23,7 @@
 # Volledige voorbeeldanalyses
 - [x] Alle open en opgeloste voorbeelden voorzien van volledige 5W1H en vijf aansluitende waarom-stappen.
 - [x] Analyses controleren in de actielijst en het actieformulier.
+
+# Overbodige PI Incidenten
+- [x] Bovenliggende PI "Incidenten" overal verwijderen; de drie incidentmaten staan los op één niveau.
+- [x] Keuzeknoppen, scorematrix en KPI/PI-regel in de actielijst controleren en testen.
