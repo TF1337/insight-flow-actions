@@ -37,7 +37,7 @@ const OVM: Category[] = [
     name: "Veiligheid",
     tone: "bg-topic-k",
     kpis: [
-      { title: "Gedragsregels", value: "5,8", norm: "Norm 5,75", status: "op norm" },
+      { title: "Gedragsregels", value: "78,5%", norm: "Norm 98%", status: "aandacht", linkedActies: true },
       { title: "Aantal incidenten per maand", value: "0,3", norm: "Norm 0,4", status: "gunstig", bullets: ["Near misses: 30 dagen"] },
     ],
   },
@@ -84,10 +84,9 @@ const LTC: Category[] = [
     kpis: [
       {
         title: "SLA Healthcare",
-        value: "78,5%",
+        value: "98,4%",
         norm: "Norm 98%",
-        status: "aandacht",
-        linkedActies: true,
+        status: "op norm",
         bullets: ["Outbound vóór 18u: 98,5%", "Inbound na 12u: 98,1%", "Orders in Full: 99,1% · norm 99%"],
       },
       {
@@ -162,7 +161,7 @@ function KpiCard({ kpi, openCount }: { kpi: Kpi; openCount?: number | undefined 
   );
   if (kpi.linkedActies) {
     return (
-      <Link to="/acties" aria-label="Bekijk open acties onder SLA Healthcare">
+      <Link to="/acties" aria-label="Bekijk open acties onder Gedragsregels">
         {body}
       </Link>
     );
@@ -205,8 +204,8 @@ function Dashboard() {
         </h1>
       </header>
       <main className="mx-auto grid max-w-6xl gap-8 px-4 py-8 lg:grid-cols-2">
-        <SiteColumn name="OFM" categories={OVM} />
-        <SiteColumn name="LDC" categories={LTC} openCount={openCount} />
+        <SiteColumn name="OFM" categories={OVM} openCount={openCount} />
+        <SiteColumn name="LDC" categories={LTC} />
       </main>
       <footer className="pb-8 text-center text-xs text-muted-foreground">
         ▲ gunstig / op norm · ▼ aandacht · → norm nog te bepalen. Alle waarden en trends in dit ontwerp zijn fictief.
