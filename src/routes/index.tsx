@@ -37,7 +37,7 @@ const OVM: Category[] = [
     name: "Veiligheid",
     tone: "bg-topic-k",
     kpis: [
-      { title: "Gedragsregels", value: "78,5%", norm: "Norm 98%", status: "aandacht", linkedActies: true },
+      { title: "Gedragsregels", value: "4,3", norm: "Norm 5,75", status: "aandacht", linkedActies: true },
       { title: "Aantal incidenten per maand", value: "0,3", norm: "Norm 0,4", status: "gunstig", bullets: ["Near misses: 30 dagen"] },
     ],
   },
