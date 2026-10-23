@@ -161,7 +161,7 @@ function KpiCard({ kpi, openCount }: { kpi: Kpi; openCount?: number | undefined 
   );
   if (kpi.linkedActies) {
     return (
-      <Link to="/acties" aria-label="Bekijk open acties onder SLA Healthcare">
+      <Link to="/acties" aria-label="Bekijk open acties onder Gedragsregels">
         {body}
       </Link>
     );
@@ -204,8 +204,8 @@ function Dashboard() {
         </h1>
       </header>
       <main className="mx-auto grid max-w-6xl gap-8 px-4 py-8 lg:grid-cols-2">
-        <SiteColumn name="OFM" categories={OVM} />
-        <SiteColumn name="LDC" categories={LTC} openCount={openCount} />
+        <SiteColumn name="OFM" categories={OVM} openCount={openCount} />
+        <SiteColumn name="LDC" categories={LTC} />
       </main>
       <footer className="pb-8 text-center text-xs text-muted-foreground">
         ▲ gunstig / op norm · ▼ aandacht · → norm nog te bepalen. Alle waarden en trends in dit ontwerp zijn fictief.
