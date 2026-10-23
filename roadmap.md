@@ -31,3 +31,4 @@
 # Navigatie naar de actielijst
 - [x] Percentage rood onder de norm en de klikbare navigatie van SLA Healthcare naar Gedragsregels (OFM, Veiligheid) verzetten.
 - [x] Controleren dat SLA Healthcare een gewone kaart is en Gedragsregels naar de actielijst voert.
+- [x] Gedragsregels als cijfer 1–6 met norm 5,75 op 4,3 zetten; rood en klikbaar blijven.
