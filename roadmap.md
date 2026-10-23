@@ -27,3 +27,7 @@
 # Overbodige PI Incidenten
 - [x] Bovenliggende PI "Incidenten" overal verwijderen; de drie incidentmaten staan los op één niveau.
 - [x] Keuzeknoppen, scorematrix en KPI/PI-regel in de actielijst controleren en testen.
+
+# Navigatie naar de actielijst
+- [x] Percentage rood onder de norm en de klikbare navigatie van SLA Healthcare naar Gedragsregels (OFM, Veiligheid) verzetten.
+- [x] Controleren dat SLA Healthcare een gewone kaart is en Gedragsregels naar de actielijst voert.
