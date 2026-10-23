@@ -37,7 +37,7 @@ const OVM: Category[] = [
     name: "Veiligheid",
     tone: "bg-topic-k",
     kpis: [
-      { title: "Gedragsregels", value: "5,8", norm: "Norm 5,75", status: "op norm" },
+      { title: "Gedragsregels", value: "78,5%", norm: "Norm 98%", status: "aandacht", linkedActies: true },
       { title: "Aantal incidenten per maand", value: "0,3", norm: "Norm 0,4", status: "gunstig", bullets: ["Near misses: 30 dagen"] },
     ],
   },
@@ -84,10 +84,9 @@ const LTC: Category[] = [
     kpis: [
       {
         title: "SLA Healthcare",
-        value: "78,5%",
+        value: "98,4%",
         norm: "Norm 98%",
-        status: "aandacht",
-        linkedActies: true,
+        status: "op norm",
         bullets: ["Outbound vóór 18u: 98,5%", "Inbound na 12u: 98,1%", "Orders in Full: 99,1% · norm 99%"],
       },
       {
