@@ -1,0 +1,7 @@
+# Kleuren uit Insight Flow Actions (src/styles.css)
+[theme]
+primaryColor = "#192a3c"
+backgroundColor = "#fcfaf6"
+secondaryBackgroundColor = "#f1eee9"
+textColor = "#141b24"
+font = "sans serif"

@@ -1,0 +1,179 @@
+OBSERVATIE_ID,TITEL,AFDELING,ONDERWERP,SIGNAAL,MELDER,DATUM,BRON
+obs-pallet,Beschadigde pallet bij dock 4,Inbound,Veiligheid,rood,Sanne de Vries,2026-10-22,app-voorbeeld
+obs-scanner,Handscanners vaak leeg halverwege dienst,Orderpick,Productiviteit,oranje,Mark Jansen,2026-10-19,app-voorbeeld
+obs-bezetting,Onderbezetting outbound op vrijdag,Outbound,Personeel,rood,Peter Bakker,2026-10-24,app-voorbeeld
+obs-olie,Olielekkage heftruck in gang C,Opslag,Veiligheid,rood,Lotte Visser,2026-10-17,app-voorbeeld
+obs-afval,"Afvalcontainers overvol, karton en folie gemengd",Pakstraat,Veiligheid,oranje,Fatima El Amrani,2026-10-12,app-voorbeeld
+obs-tillen,Zwaar tillen vanaf lage pallets,Orderpick,Personeel,rood,Peter Bakker,2026-10-04,app-voorbeeld
+obs-nooduitgang,Nooduitgang geblokkeerd door dozen,Inbound,Veiligheid,groen,Sanne de Vries,2026-09-25,app-voorbeeld
+obs-licht,Verlichting gang F defect,Opslag,Productiviteit,oranje,Mark Jansen,2026-10-20,app-voorbeeld
+obs-olie-oud,Olielekkage heftruck 2 in gang B,Opslag,Veiligheid,groen,Lotte Visser,2026-08-23,app-voorbeeld
+obs-scanner-oud,Lege scanners door onhandig geplaatst laadstation,Orderpick,Productiviteit,groen,Peter Bakker,2026-09-08,app-voorbeeld
+obs-s0001,Lading hangt over palletrand,Inbound,Veiligheid,oranje,Peter Bakker,2026-08-09,synthetisch
+obs-s0002,Geen veiligheidsschoenen gedragen,Inbound,Veiligheid,groen,Peter Bakker,2026-08-07,synthetisch
+obs-s0003,Dubbele handeling bij herpakken,Inbound,Productiviteit,oranje,Peter Bakker,2026-08-05,synthetisch
+obs-s0004,Looproute geblokkeerd door pallets,Opslag,Veiligheid,groen,Fatima El Amrani,2026-08-10,synthetisch
+obs-s0005,Stellingbeschermer beschadigd,Opslag,Veiligheid,rood,Fatima El Amrani,2026-08-08,synthetisch
+obs-s0006,Wachttijd op heftruck,Opslag,Productiviteit,groen,Jeroen Smit,2026-08-10,synthetisch
+obs-s0007,Wachttijd op heftruck,Opslag,Productiviteit,groen,Lotte Visser,2026-08-11,synthetisch
+obs-s0008,Storing transportband,Opslag,Productiviteit,groen,Sanne de Vries,2026-08-09,synthetisch
+obs-s0009,Stellingbeschermer beschadigd,Orderpick,Veiligheid,oranje,Lotte Visser,2026-08-06,synthetisch
+obs-s0010,"Picklocatie leeg, aanvulling te laat",Orderpick,Productiviteit,groen,Jeroen Smit,2026-08-10,synthetisch
+obs-s0011,Onderbezetting late dienst,Orderpick,Personeel,groen,Mark Jansen,2026-08-05,synthetisch
+obs-s0012,Beschadigde verpakking bij ontvangst,Pakstraat,Kwaliteit,groen,Mark Jansen,2026-08-07,synthetisch
+obs-s0013,Onderbezetting late dienst,Pakstraat,Personeel,groen,Jeroen Smit,2026-08-10,synthetisch
+obs-s0014,Klachten over tilbelasting,Pakstraat,Personeel,rood,Jeroen Smit,2026-08-08,synthetisch
+obs-s0015,Brandblusser niet bereikbaar,Retouren,Veiligheid,rood,Mark Jansen,2026-08-09,synthetisch
+obs-s0016,"Picklocatie leeg, aanvulling te laat",Retouren,Productiviteit,oranje,Mark Jansen,2026-08-11,synthetisch
+obs-s0017,Instructie niet begrepen door taalbarrière,Retouren,Personeel,oranje,Fatima El Amrani,2026-08-10,synthetisch
+obs-s0018,Verkeerd artikel gepickt,Inbound,Kwaliteit,rood,Fatima El Amrani,2026-08-17,synthetisch
+obs-s0019,Storing transportband,Opslag,Productiviteit,groen,Sanne de Vries,2026-08-14,synthetisch
+obs-s0020,Retour te laat verwerkt,Orderpick,Kwaliteit,groen,Fatima El Amrani,2026-08-12,synthetisch
+obs-s0021,Scanner valt uit tijdens picken,Orderpick,Productiviteit,oranje,Mark Jansen,2026-08-18,synthetisch
+obs-s0022,Klachten over tilbelasting,Orderpick,Personeel,oranje,Fatima El Amrani,2026-08-18,synthetisch
+obs-s0023,Nieuwe medewerker zonder inwerkmaatje,Orderpick,Personeel,groen,Mark Jansen,2026-08-12,synthetisch
+obs-s0024,Wachttijd op heftruck,Pakstraat,Productiviteit,oranje,Peter Bakker,2026-08-16,synthetisch
+obs-s0025,Storing transportband,Retouren,Productiviteit,rood,Sanne de Vries,2026-08-13,synthetisch
+obs-s0026,Klachten over tilbelasting,Retouren,Personeel,rood,Sanne de Vries,2026-08-15,synthetisch
+obs-s0027,Retour te laat verwerkt,Inbound,Kwaliteit,oranje,Mark Jansen,2026-08-23,synthetisch
+obs-s0028,Storing transportband,Inbound,Productiviteit,oranje,Sanne de Vries,2026-08-20,synthetisch
+obs-s0029,Wachttijd op heftruck,Inbound,Productiviteit,oranje,Peter Bakker,2026-08-23,synthetisch
+obs-s0030,Looproute geblokkeerd door pallets,Opslag,Veiligheid,rood,Jeroen Smit,2026-08-24,synthetisch
+obs-s0031,Storing transportband,Opslag,Productiviteit,oranje,Peter Bakker,2026-08-19,synthetisch
+obs-s0032,Verkeerd artikel gepickt,Orderpick,Kwaliteit,groen,Fatima El Amrani,2026-08-22,synthetisch
+obs-s0033,"Picklocatie leeg, aanvulling te laat",Orderpick,Productiviteit,groen,Jeroen Smit,2026-08-23,synthetisch
+obs-s0034,Scanner valt uit tijdens picken,Orderpick,Productiviteit,rood,Lotte Visser,2026-08-20,synthetisch
+obs-s0035,Scanner valt uit tijdens picken,Orderpick,Productiviteit,oranje,Mark Jansen,2026-08-19,synthetisch
+obs-s0036,Klachten over tilbelasting,Orderpick,Personeel,groen,Peter Bakker,2026-08-23,synthetisch
+obs-s0037,Stellingbeschermer beschadigd,Pakstraat,Veiligheid,oranje,Mark Jansen,2026-08-20,synthetisch
+obs-s0038,Brandblusser niet bereikbaar,Pakstraat,Veiligheid,rood,Lotte Visser,2026-08-24,synthetisch
+obs-s0039,Lading hangt over palletrand,Outbound,Veiligheid,rood,Fatima El Amrani,2026-08-20,synthetisch
+obs-s0040,Geen veiligheidsschoenen gedragen,Outbound,Veiligheid,oranje,Lotte Visser,2026-08-19,synthetisch
+obs-s0041,Telverschil bij inslag,Retouren,Kwaliteit,oranje,Lotte Visser,2026-08-19,synthetisch
+obs-s0042,Inpaktafel niet op werkhoogte,Retouren,Productiviteit,oranje,Mark Jansen,2026-08-22,synthetisch
+obs-s0043,Lading hangt over palletrand,Opslag,Veiligheid,groen,Jeroen Smit,2026-08-31,synthetisch
+obs-s0044,Geen veiligheidsschoenen gedragen,Opslag,Veiligheid,groen,Sanne de Vries,2026-08-26,synthetisch
+obs-s0045,Verkeerd artikel gepickt,Orderpick,Kwaliteit,oranje,Jeroen Smit,2026-08-27,synthetisch
+obs-s0046,"Picklocatie leeg, aanvulling te laat",Orderpick,Productiviteit,groen,Fatima El Amrani,2026-08-28,synthetisch
+obs-s0047,"Picklocatie leeg, aanvulling te laat",Orderpick,Productiviteit,oranje,Jeroen Smit,2026-08-30,synthetisch
+obs-s0048,Wachttijd op heftruck,Orderpick,Productiviteit,groen,Mark Jansen,2026-08-29,synthetisch
+obs-s0049,Instructie niet begrepen door taalbarrière,Orderpick,Personeel,rood,Jeroen Smit,2026-08-27,synthetisch
+obs-s0050,Storing transportband,Pakstraat,Productiviteit,groen,Peter Bakker,2026-08-30,synthetisch
+obs-s0051,Storing transportband,Outbound,Productiviteit,oranje,Lotte Visser,2026-08-29,synthetisch
+obs-s0052,Overuren structureel boven planning,Outbound,Personeel,rood,Lotte Visser,2026-08-30,synthetisch
+obs-s0053,Beschadigde verpakking bij ontvangst,Retouren,Kwaliteit,rood,Mark Jansen,2026-08-28,synthetisch
+obs-s0054,Verkeerd artikel gepickt,Retouren,Kwaliteit,oranje,Jeroen Smit,2026-08-26,synthetisch
+obs-s0055,Wachttijd op heftruck,Retouren,Productiviteit,groen,Sanne de Vries,2026-08-29,synthetisch
+obs-s0056,Beschadigde verpakking bij ontvangst,Inbound,Kwaliteit,oranje,Sanne de Vries,2026-09-08,synthetisch
+obs-s0057,Overuren structureel boven planning,Inbound,Personeel,groen,Fatima El Amrani,2026-09-06,synthetisch
+obs-s0058,Gladde vloer bij dockdeur,Opslag,Veiligheid,rood,Jeroen Smit,2026-09-02,synthetisch
+obs-s0059,Telverschil bij inslag,Opslag,Kwaliteit,oranje,Fatima El Amrani,2026-09-03,synthetisch
+obs-s0060,Klachten over tilbelasting,Orderpick,Personeel,oranje,Jeroen Smit,2026-09-04,synthetisch
+obs-s0061,Retour te laat verwerkt,Pakstraat,Kwaliteit,groen,Jeroen Smit,2026-09-05,synthetisch
+obs-s0062,Zending zonder pakbon,Pakstraat,Kwaliteit,rood,Fatima El Amrani,2026-09-06,synthetisch
+obs-s0063,Zending zonder pakbon,Pakstraat,Kwaliteit,groen,Mark Jansen,2026-09-03,synthetisch
+obs-s0064,Nieuwe medewerker zonder inwerkmaatje,Pakstraat,Personeel,oranje,Fatima El Amrani,2026-09-08,synthetisch
+obs-s0065,Overuren structureel boven planning,Outbound,Personeel,oranje,Mark Jansen,2026-09-07,synthetisch
+obs-s0066,Overuren structureel boven planning,Outbound,Personeel,oranje,Jeroen Smit,2026-09-07,synthetisch
+obs-s0067,Onderbezetting late dienst,Outbound,Personeel,oranje,Fatima El Amrani,2026-09-06,synthetisch
+obs-s0068,Dubbele handeling bij herpakken,Retouren,Productiviteit,oranje,Lotte Visser,2026-09-08,synthetisch
+obs-s0069,Lading hangt over palletrand,Inbound,Veiligheid,groen,Sanne de Vries,2026-09-12,synthetisch
+obs-s0070,Brandblusser niet bereikbaar,Orderpick,Veiligheid,rood,Lotte Visser,2026-09-12,synthetisch
+obs-s0071,Retour te laat verwerkt,Orderpick,Kwaliteit,oranje,Fatima El Amrani,2026-09-14,synthetisch
+obs-s0072,Inpaktafel niet op werkhoogte,Orderpick,Productiviteit,groen,Peter Bakker,2026-09-09,synthetisch
+obs-s0073,Klachten over tilbelasting,Orderpick,Personeel,rood,Lotte Visser,2026-09-11,synthetisch
+obs-s0074,Klachten over tilbelasting,Orderpick,Personeel,rood,Lotte Visser,2026-09-11,synthetisch
+obs-s0075,Geen veiligheidsschoenen gedragen,Pakstraat,Veiligheid,oranje,Sanne de Vries,2026-09-15,synthetisch
+obs-s0076,Dubbele handeling bij herpakken,Outbound,Productiviteit,oranje,Mark Jansen,2026-09-11,synthetisch
+obs-s0077,Onderbezetting late dienst,Outbound,Personeel,oranje,Mark Jansen,2026-09-10,synthetisch
+obs-s0078,Zending zonder pakbon,Retouren,Kwaliteit,groen,Mark Jansen,2026-09-11,synthetisch
+obs-s0079,Wachttijd op heftruck,Retouren,Productiviteit,groen,Peter Bakker,2026-09-09,synthetisch
+obs-s0080,Lading hangt over palletrand,Inbound,Veiligheid,rood,Jeroen Smit,2026-09-22,synthetisch
+obs-s0081,Wachttijd op heftruck,Inbound,Productiviteit,groen,Peter Bakker,2026-09-22,synthetisch
+obs-s0082,Stellingbeschermer beschadigd,Opslag,Veiligheid,groen,Mark Jansen,2026-09-16,synthetisch
+obs-s0083,Zending zonder pakbon,Opslag,Kwaliteit,groen,Peter Bakker,2026-09-21,synthetisch
+obs-s0084,Beschadigde verpakking bij ontvangst,Orderpick,Kwaliteit,rood,Peter Bakker,2026-09-19,synthetisch
+obs-s0085,Zending zonder pakbon,Orderpick,Kwaliteit,groen,Jeroen Smit,2026-09-21,synthetisch
+obs-s0086,Scanner valt uit tijdens picken,Orderpick,Productiviteit,groen,Mark Jansen,2026-09-17,synthetisch
+obs-s0087,Geen veiligheidsschoenen gedragen,Pakstraat,Veiligheid,groen,Fatima El Amrani,2026-09-20,synthetisch
+obs-s0088,Label onleesbaar op doos,Pakstraat,Kwaliteit,groen,Sanne de Vries,2026-09-19,synthetisch
+obs-s0089,Retour te laat verwerkt,Pakstraat,Kwaliteit,oranje,Sanne de Vries,2026-09-18,synthetisch
+obs-s0090,Beschadigde verpakking bij ontvangst,Pakstraat,Kwaliteit,oranje,Fatima El Amrani,2026-09-20,synthetisch
+obs-s0091,Verkeerd artikel gepickt,Pakstraat,Kwaliteit,oranje,Lotte Visser,2026-09-20,synthetisch
+obs-s0092,Heftruck rijdt te hard in gang,Outbound,Veiligheid,oranje,Lotte Visser,2026-09-18,synthetisch
+obs-s0093,Lading hangt over palletrand,Outbound,Veiligheid,rood,Lotte Visser,2026-09-17,synthetisch
+obs-s0094,Zending zonder pakbon,Outbound,Kwaliteit,oranje,Mark Jansen,2026-09-17,synthetisch
+obs-s0095,Nieuwe medewerker zonder inwerkmaatje,Outbound,Personeel,rood,Mark Jansen,2026-09-22,synthetisch
+obs-s0096,Verkeerd artikel gepickt,Retouren,Kwaliteit,oranje,Peter Bakker,2026-09-19,synthetisch
+obs-s0097,Nieuwe medewerker zonder inwerkmaatje,Retouren,Personeel,groen,Fatima El Amrani,2026-09-19,synthetisch
+obs-s0098,Lading hangt over palletrand,Inbound,Veiligheid,oranje,Jeroen Smit,2026-09-27,synthetisch
+obs-s0099,Geen veiligheidsschoenen gedragen,Inbound,Veiligheid,rood,Jeroen Smit,2026-09-25,synthetisch
+obs-s0100,Lading hangt over palletrand,Opslag,Veiligheid,rood,Peter Bakker,2026-09-24,synthetisch
+obs-s0101,Beschadigde verpakking bij ontvangst,Pakstraat,Kwaliteit,groen,Lotte Visser,2026-09-28,synthetisch
+obs-s0102,Dubbele handeling bij herpakken,Pakstraat,Productiviteit,oranje,Mark Jansen,2026-09-24,synthetisch
+obs-s0103,Storing transportband,Outbound,Productiviteit,oranje,Lotte Visser,2026-09-24,synthetisch
+obs-s0104,Beschadigde verpakking bij ontvangst,Retouren,Kwaliteit,rood,Mark Jansen,2026-09-26,synthetisch
+obs-s0105,Verkeerd artikel gepickt,Retouren,Kwaliteit,groen,Jeroen Smit,2026-09-25,synthetisch
+obs-s0106,Label onleesbaar op doos,Retouren,Kwaliteit,rood,Sanne de Vries,2026-09-23,synthetisch
+obs-s0107,Heftruck rijdt te hard in gang,Inbound,Veiligheid,groen,Sanne de Vries,2026-10-01,synthetisch
+obs-s0108,Wachttijd op heftruck,Inbound,Productiviteit,groen,Sanne de Vries,2026-10-01,synthetisch
+obs-s0109,Gladde vloer bij dockdeur,Opslag,Veiligheid,rood,Mark Jansen,2026-10-01,synthetisch
+obs-s0110,Brandblusser niet bereikbaar,Opslag,Veiligheid,groen,Peter Bakker,2026-09-30,synthetisch
+obs-s0111,Brandblusser niet bereikbaar,Opslag,Veiligheid,groen,Mark Jansen,2026-10-01,synthetisch
+obs-s0112,Brandblusser niet bereikbaar,Opslag,Veiligheid,oranje,Lotte Visser,2026-10-06,synthetisch
+obs-s0113,"Picklocatie leeg, aanvulling te laat",Opslag,Productiviteit,groen,Mark Jansen,2026-10-03,synthetisch
+obs-s0114,Scanner valt uit tijdens picken,Opslag,Productiviteit,rood,Sanne de Vries,2026-09-30,synthetisch
+obs-s0115,Heftruck rijdt te hard in gang,Orderpick,Veiligheid,rood,Sanne de Vries,2026-10-01,synthetisch
+obs-s0116,Geen veiligheidsschoenen gedragen,Orderpick,Veiligheid,groen,Lotte Visser,2026-10-04,synthetisch
+obs-s0117,"Picklocatie leeg, aanvulling te laat",Orderpick,Productiviteit,oranje,Mark Jansen,2026-10-01,synthetisch
+obs-s0118,Wachttijd op heftruck,Outbound,Productiviteit,groen,Jeroen Smit,2026-10-03,synthetisch
+obs-s0119,Onderbezetting late dienst,Outbound,Personeel,oranje,Lotte Visser,2026-10-02,synthetisch
+obs-s0120,Instructie niet begrepen door taalbarrière,Outbound,Personeel,groen,Lotte Visser,2026-10-05,synthetisch
+obs-s0121,Klachten over tilbelasting,Outbound,Personeel,groen,Fatima El Amrani,2026-10-05,synthetisch
+obs-s0122,Klachten over tilbelasting,Retouren,Personeel,oranje,Lotte Visser,2026-10-06,synthetisch
+obs-s0123,Looproute geblokkeerd door pallets,Inbound,Veiligheid,oranje,Sanne de Vries,2026-10-11,synthetisch
+obs-s0124,Stellingbeschermer beschadigd,Inbound,Veiligheid,groen,Jeroen Smit,2026-10-11,synthetisch
+obs-s0125,Brandblusser niet bereikbaar,Inbound,Veiligheid,oranje,Lotte Visser,2026-10-12,synthetisch
+obs-s0126,Stellingbeschermer beschadigd,Opslag,Veiligheid,groen,Sanne de Vries,2026-10-11,synthetisch
+obs-s0127,Gladde vloer bij dockdeur,Opslag,Veiligheid,rood,Peter Bakker,2026-10-09,synthetisch
+obs-s0128,Brandblusser niet bereikbaar,Opslag,Veiligheid,oranje,Fatima El Amrani,2026-10-13,synthetisch
+obs-s0129,Lading hangt over palletrand,Opslag,Veiligheid,groen,Sanne de Vries,2026-10-10,synthetisch
+obs-s0130,Lading hangt over palletrand,Opslag,Veiligheid,groen,Peter Bakker,2026-10-12,synthetisch
+obs-s0131,"Picklocatie leeg, aanvulling te laat",Opslag,Productiviteit,rood,Jeroen Smit,2026-10-13,synthetisch
+obs-s0132,Scanner valt uit tijdens picken,Orderpick,Productiviteit,groen,Peter Bakker,2026-10-12,synthetisch
+obs-s0133,Dubbele handeling bij herpakken,Orderpick,Productiviteit,rood,Peter Bakker,2026-10-10,synthetisch
+obs-s0134,Inpaktafel niet op werkhoogte,Orderpick,Productiviteit,groen,Sanne de Vries,2026-10-13,synthetisch
+obs-s0135,Dubbele handeling bij herpakken,Orderpick,Productiviteit,oranje,Fatima El Amrani,2026-10-12,synthetisch
+obs-s0136,Verkeerd artikel gepickt,Pakstraat,Kwaliteit,oranje,Mark Jansen,2026-10-09,synthetisch
+obs-s0137,Zending zonder pakbon,Pakstraat,Kwaliteit,oranje,Jeroen Smit,2026-10-10,synthetisch
+obs-s0138,Verkeerd artikel gepickt,Pakstraat,Kwaliteit,rood,Sanne de Vries,2026-10-12,synthetisch
+obs-s0139,Lading hangt over palletrand,Outbound,Veiligheid,rood,Lotte Visser,2026-10-10,synthetisch
+obs-s0140,Verkeerd artikel gepickt,Outbound,Kwaliteit,oranje,Mark Jansen,2026-10-12,synthetisch
+obs-s0141,Onderbezetting late dienst,Outbound,Personeel,groen,Sanne de Vries,2026-10-10,synthetisch
+obs-s0142,Brandblusser niet bereikbaar,Inbound,Veiligheid,oranje,Fatima El Amrani,2026-10-17,synthetisch
+obs-s0143,Lading hangt over palletrand,Inbound,Veiligheid,oranje,Sanne de Vries,2026-10-14,synthetisch
+obs-s0144,Heftruck rijdt te hard in gang,Inbound,Veiligheid,oranje,Fatima El Amrani,2026-10-14,synthetisch
+obs-s0145,Snijmes zonder bescherming in gebruik,Opslag,Veiligheid,rood,Jeroen Smit,2026-10-20,synthetisch
+obs-s0146,Stellingbeschermer beschadigd,Orderpick,Veiligheid,groen,Jeroen Smit,2026-10-17,synthetisch
+obs-s0147,Verkeerd artikel gepickt,Orderpick,Kwaliteit,groen,Sanne de Vries,2026-10-20,synthetisch
+obs-s0148,Onderbezetting late dienst,Orderpick,Personeel,oranje,Fatima El Amrani,2026-10-14,synthetisch
+obs-s0149,Brandblusser niet bereikbaar,Outbound,Veiligheid,rood,Lotte Visser,2026-10-16,synthetisch
+obs-s0150,Retour te laat verwerkt,Outbound,Kwaliteit,groen,Jeroen Smit,2026-10-16,synthetisch
+obs-s0151,Klachten over tilbelasting,Outbound,Personeel,oranje,Sanne de Vries,2026-10-20,synthetisch
+obs-s0152,Telverschil bij inslag,Inbound,Kwaliteit,oranje,Fatima El Amrani,2026-10-23,synthetisch
+obs-s0153,Label onleesbaar op doos,Inbound,Kwaliteit,rood,Fatima El Amrani,2026-10-24,synthetisch
+obs-s0154,Brandblusser niet bereikbaar,Opslag,Veiligheid,oranje,Fatima El Amrani,2026-10-25,synthetisch
+obs-s0155,Stellingbeschermer beschadigd,Opslag,Veiligheid,rood,Jeroen Smit,2026-10-26,synthetisch
+obs-s0156,Brandblusser niet bereikbaar,Opslag,Veiligheid,groen,Mark Jansen,2026-10-24,synthetisch
+obs-s0157,Heftruck rijdt te hard in gang,Opslag,Veiligheid,rood,Peter Bakker,2026-10-23,synthetisch
+obs-s0158,Heftruck rijdt te hard in gang,Opslag,Veiligheid,groen,Jeroen Smit,2026-10-21,synthetisch
+obs-s0159,Beschadigde verpakking bij ontvangst,Opslag,Kwaliteit,rood,Peter Bakker,2026-10-27,synthetisch
+obs-s0160,Nieuwe medewerker zonder inwerkmaatje,Opslag,Personeel,rood,Sanne de Vries,2026-10-22,synthetisch
+obs-s0161,Scanner valt uit tijdens picken,Orderpick,Productiviteit,groen,Lotte Visser,2026-10-23,synthetisch
+obs-s0162,Telverschil bij inslag,Pakstraat,Kwaliteit,rood,Sanne de Vries,2026-10-26,synthetisch
+obs-s0163,Telverschil bij inslag,Pakstraat,Kwaliteit,oranje,Peter Bakker,2026-10-25,synthetisch
+obs-s0164,Looproute geblokkeerd door pallets,Outbound,Veiligheid,rood,Mark Jansen,2026-10-26,synthetisch
+obs-s0165,Verkeerd artikel gepickt,Outbound,Kwaliteit,oranje,Mark Jansen,2026-10-25,synthetisch
+obs-s0166,Nieuwe medewerker zonder inwerkmaatje,Outbound,Personeel,rood,Peter Bakker,2026-10-25,synthetisch
+obs-s0167,Klachten over tilbelasting,Outbound,Personeel,oranje,Mark Jansen,2026-10-24,synthetisch
+obs-s0168,Storing transportband,Retouren,Productiviteit,groen,Fatima El Amrani,2026-10-23,synthetisch
