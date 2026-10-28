@@ -1,0 +1,19 @@
+VESTIGING,ONDERWERP,KPI,WAARDE,NORM,STATUS,TOELICHTING,ACTIE_KPI,VOLGORDE
+OFM,Veiligheid,Gedragsregels,"4,3","Norm 5,75",aandacht,,Veiligheid,1
+OFM,Veiligheid,Aantal incidenten per maand,"0,3","Norm 0,4",gunstig,Near misses: 30 dagen,,2
+OFM,Kwaliteit,Retouren,"6,4 d",Norm 7 dagen,gunstig,Retouren binnen SLA · leeftijd retouren,,3
+OFM,Kwaliteit,Inbound doorlooptijd,19 u,Norm <24 uur,gunstig,Leveringen na ontvangst IG binnen 24 uur op voorraad,,4
+OFM,Kwaliteit,HBV doorlooptijd,"8,6 u",Norm nog te bepalen,fictief,Vrijgave tot dock · INCD / PRN-KIL,,5
+OFM,Kwaliteit,Klantorders,"98,7%",Norm nog te bepalen,fictief,"On time: 98,7% | In full: 99,2%",,6
+OFM,Productiviteit,Retouren Index,97%,Norm <100%,gunstig,,,7
+OFM,Productiviteit,OFM Index,97%,Norm <100%,gunstig,Directe uren index: 96%,,8
+OFM,Personeel,Ziekteverzuim,"3,8%","Norm 4,0%",gunstig,"Lang verzuim: fictief 2,6%",Ziekteverzuim,9
+OFM,Personeel,Verhouding vast / flex,94%,Norm 95%,aandacht,Aandeel flex · fictieve actuele waarde,,10
+LDC,Veiligheid,Gedragsregels,"5,9","Norm 5,75",op norm,,,11
+LDC,Veiligheid,Aantal incidenten,"0,2","Norm 0,3",gunstig,Near misses: 30 dagen,,12
+LDC,Kwaliteit,SLA Healthcare,"98,4%",Norm 98%,op norm,"Outbound vóór 18u: 98,5% | Inbound na 12u: 98,1% | Orders in Full: 99,1% · norm 99%",SLA Healthcare,13
+LDC,Kwaliteit,SLA Printlogistiek,"95,6%",Norm 95%,op norm,"Stock zelfde dag: 95,8% | Print dag na laatste PF-scan: 95,4% | Orders in Full: 99,0% · norm 99%",,14
+LDC,Productiviteit,WPL Index,97%,Norm <100%,gunstig,WPI direct: 97%,WPL Index,15
+LDC,Productiviteit,Healthcare Index,97%,Norm <100%,gunstig,,,16
+LDC,Personeel,Ziekteverzuim,"4,2%","Norm 4,0%",aandacht,,,17
+LDC,Personeel,Verhouding vast / flex,96%,Norm 95%,op norm,Aandeel flex · fictieve actuele waarde,,18

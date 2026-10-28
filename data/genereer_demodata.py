@@ -4,17 +4,24 @@ Twee bronnen, herkenbaar aan de kolom BRON:
 - app-voorbeeld: de 10 meldingen en acties uit src/data/mock.ts (datums van 28-10-2026)
 - synthetisch:   fictieve historie van 12 weken, alleen bedoeld om de heatmap te vullen
 
+Daarnaast: medewerkers.csv (fictieve gebruikers voor de persona in het dashboard) en
+kpi_normen.csv (de KPI-kaarten uit src/routes/index.tsx). De analyseteksten (5W1H,
+5x Waarom, gedaan/resultaat) komen uit app_voorbeelden_teksten.json en teksten_synthetisch.py.
+
 Net als de CSV's in het flood-lab zijn alle waarden fictief.
 Opnieuw draaien:  python3 data/genereer_demodata.py   (schrijft naast dit script)
 """
 import csv
+import json
 import random
+import sys
 from datetime import date, timedelta
 from pathlib import Path
 
 PEIL = date(2026, 10, 28)   # dag waarop de app-voorbeelden zijn geëxporteerd
 WEKEN = 12
-rng = random.Random(1337)
+rng = random.Random(1337)    # bepaalt meldingen en acties (178 / 102)
+rng2 = random.Random(2026)   # alleen teksten en eigenaren, zodat de aantallen gelijk blijven
 
 AFDELINGEN = ["Inbound", "Opslag", "Orderpick", "Pakstraat", "Outbound", "Retouren"]
 ONDERWERPEN = ["Veiligheid", "Kwaliteit", "Productiviteit", "Personeel"]
@@ -144,11 +151,89 @@ for w in range(WEKEN):
                                          PRIORITEIT=rng.choice(prio), STATUS=status_voor(deadline, aangemaakt), BRON="synthetisch"))
 
 uit = Path(__file__).resolve().parent
-OBS_KOL = ["OBSERVATIE_ID", "TITEL", "AFDELING", "ONDERWERP", "SIGNAAL", "MELDER", "DATUM", "BRON"]
-ACT_KOL = ["ACTIE_ID", "TITEL", "OBSERVATIE_ID", "KPI", "ONDERWERP", "AFDELING", "EIGENAAR", "AANGEMAAKT", "DEADLINE", "PRIORITEIT", "STATUS", "BRON"]
-for naam, kol, rows in [("observaties.csv", OBS_KOL, obs_rows), ("acties.csv", ACT_KOL, act_rows)]:
+sys.path.insert(0, str(uit))  # teksten_synthetisch.py staat naast dit script
+from teksten_synthetisch import TEKSTEN, PLEKKEN, DIENSTEN  # noqa: E402
+
+# ── Fictieve medewerkers (persona in het dashboard) ──────────────────────────
+MEDEWERKERS = [
+    dict(NAAM="Peter Bakker", ROL="Supervisor", AFDELING="Alle afdelingen", VESTIGING="OFM"),
+    dict(NAAM="Sanne de Vries", ROL="Teamleider", AFDELING="Inbound", VESTIGING="OFM"),
+    dict(NAAM="Lotte Visser", ROL="Teamleider", AFDELING="Opslag", VESTIGING="OFM"),
+    dict(NAAM="Mark Jansen", ROL="Teamleider", AFDELING="Orderpick", VESTIGING="OFM"),
+    dict(NAAM="Fatima El Amrani", ROL="Teamleider", AFDELING="Pakstraat", VESTIGING="OFM"),
+    dict(NAAM="Jeroen Smit", ROL="Teamleider", AFDELING="Outbound", VESTIGING="OFM"),
+]
+TEAMLEIDER = {m["AFDELING"]: m["NAAM"] for m in MEDEWERKERS if m["ROL"] == "Teamleider"}
+
+# ── Analyseteksten ───────────────────────────────────────────────────────────
+demo = json.load(open(uit / "app_voorbeelden_teksten.json", encoding="utf-8"))
+for o in obs_rows:
+    if o["BRON"] == "app-voorbeeld":
+        o.update(demo["obs"][o["OBSERVATIE_ID"]])
+        continue
+    t = TEKSTEN[o["TITEL"]]
+    dienst = rng2.choice(DIENSTEN)
+    if "late dienst" in o["TITEL"].lower():
+        dienst = "late dienst"
+    weeknr = date.fromisoformat(o["DATUM"]).isocalendar()[1]
+    o.update(
+        WIE=f"Ploeg {o['AFDELING'].lower()}, {dienst}",
+        WAT=o["TITEL"],
+        WAAR=f"{o['AFDELING']}, {rng2.choice(PLEKKEN[o['AFDELING']])}",
+        WANNEER=f"{dienst.capitalize()}, week {weeknr}",
+        WAAROM=t["waarom"],
+        HOE=t["hoe"],
+        WAAROM_KETEN=" ".join(f"{i + 1}. {x}" for i, x in enumerate(t["keten"])),
+    )
+
+titel_van = {o["OBSERVATIE_ID"]: o["TITEL"] for o in obs_rows}
+for a in act_rows:
+    if a["BRON"] == "app-voorbeeld":
+        a.update(demo["acts"][a["ACTIE_ID"]])
+        continue
+    if rng2.random() < 0.75:  # meestal is de teamleider van de afdeling eigenaar
+        a["EIGENAAR"] = TEAMLEIDER.get(a["AFDELING"], "Peter Bakker")
+    t = TEKSTEN[titel_van[a["OBSERVATIE_ID"]]]
+    a["TITEL"] = t["hoe"].split(";")[0].split(". ")[0].rstrip(".")  # actie volgt uit de maatregel
+    a["GEDAAN"] = t["gedaan"] if a["STATUS"] in AFGEROND else ""
+    a["RESULTAAT"] = t["resultaat"] if a["STATUS"] == "Resultaat gecontroleerd" else ""
+
+# ── KPI-kaarten zoals in src/routes/index.tsx (fictieve waarden) ─────────────
+# ACTIE_KPI: kaart waaronder de acties van dat onderwerp vallen (kolom KPI in acties.csv)
+KPI_RIJEN = [
+    ("OFM", "Veiligheid", "Gedragsregels", "4,3", "Norm 5,75", "aandacht", "", "Veiligheid"),
+    ("OFM", "Veiligheid", "Aantal incidenten per maand", "0,3", "Norm 0,4", "gunstig", "Near misses: 30 dagen", ""),
+    ("OFM", "Kwaliteit", "Retouren", "6,4 d", "Norm 7 dagen", "gunstig", "Retouren binnen SLA · leeftijd retouren", ""),
+    ("OFM", "Kwaliteit", "Inbound doorlooptijd", "19 u", "Norm <24 uur", "gunstig", "Leveringen na ontvangst IG binnen 24 uur op voorraad", ""),
+    ("OFM", "Kwaliteit", "HBV doorlooptijd", "8,6 u", "Norm nog te bepalen", "fictief", "Vrijgave tot dock · INCD / PRN-KIL", ""),
+    ("OFM", "Kwaliteit", "Klantorders", "98,7%", "Norm nog te bepalen", "fictief", "On time: 98,7% | In full: 99,2%", ""),
+    ("OFM", "Productiviteit", "Retouren Index", "97%", "Norm <100%", "gunstig", "", ""),
+    ("OFM", "Productiviteit", "OFM Index", "97%", "Norm <100%", "gunstig", "Directe uren index: 96%", ""),
+    ("OFM", "Personeel", "Ziekteverzuim", "3,8%", "Norm 4,0%", "gunstig", "Lang verzuim: fictief 2,6%", "Ziekteverzuim"),
+    ("OFM", "Personeel", "Verhouding vast / flex", "94%", "Norm 95%", "aandacht", "Aandeel flex · fictieve actuele waarde", ""),
+    ("LDC", "Veiligheid", "Gedragsregels", "5,9", "Norm 5,75", "op norm", "", ""),
+    ("LDC", "Veiligheid", "Aantal incidenten", "0,2", "Norm 0,3", "gunstig", "Near misses: 30 dagen", ""),
+    ("LDC", "Kwaliteit", "SLA Healthcare", "98,4%", "Norm 98%", "op norm",
+     "Outbound vóór 18u: 98,5% | Inbound na 12u: 98,1% | Orders in Full: 99,1% · norm 99%", "SLA Healthcare"),
+    ("LDC", "Kwaliteit", "SLA Printlogistiek", "95,6%", "Norm 95%", "op norm",
+     "Stock zelfde dag: 95,8% | Print dag na laatste PF-scan: 95,4% | Orders in Full: 99,0% · norm 99%", ""),
+    ("LDC", "Productiviteit", "WPL Index", "97%", "Norm <100%", "gunstig", "WPI direct: 97%", "WPL Index"),
+    ("LDC", "Productiviteit", "Healthcare Index", "97%", "Norm <100%", "gunstig", "", ""),
+    ("LDC", "Personeel", "Ziekteverzuim", "4,2%", "Norm 4,0%", "aandacht", "", ""),
+    ("LDC", "Personeel", "Verhouding vast / flex", "96%", "Norm 95%", "op norm", "Aandeel flex · fictieve actuele waarde", ""),
+]
+KPI_KOL = ["VESTIGING", "ONDERWERP", "KPI", "WAARDE", "NORM", "STATUS", "TOELICHTING", "ACTIE_KPI", "VOLGORDE"]
+kpi_rows = [dict(zip(KPI_KOL, r + (i + 1,))) for i, r in enumerate(KPI_RIJEN)]
+
+OBS_KOL = ["OBSERVATIE_ID", "TITEL", "AFDELING", "ONDERWERP", "SIGNAAL", "MELDER", "DATUM", "BRON",
+           "WIE", "WAT", "WAAR", "WANNEER", "WAAROM", "HOE", "WAAROM_KETEN"]
+ACT_KOL = ["ACTIE_ID", "TITEL", "OBSERVATIE_ID", "KPI", "ONDERWERP", "AFDELING", "EIGENAAR", "AANGEMAAKT", "DEADLINE",
+           "PRIORITEIT", "STATUS", "BRON", "GEDAAN", "RESULTAAT"]
+MW_KOL = ["NAAM", "ROL", "AFDELING", "VESTIGING"]
+for naam, kol, rows in [("observaties.csv", OBS_KOL, obs_rows), ("acties.csv", ACT_KOL, act_rows),
+                        ("medewerkers.csv", MW_KOL, MEDEWERKERS), ("kpi_normen.csv", KPI_KOL, kpi_rows)]:
     with open(uit / naam, "w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=kol, quoting=csv.QUOTE_MINIMAL)
         w.writeheader()
         w.writerows(rows)
-print(f"{len(obs_rows)} observaties, {len(act_rows)} acties")
+print(f"{len(obs_rows)} observaties, {len(act_rows)} acties, {len(MEDEWERKERS)} medewerkers, {len(kpi_rows)} KPI's")
