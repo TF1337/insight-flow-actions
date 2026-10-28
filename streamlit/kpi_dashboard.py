@@ -126,19 +126,14 @@ with tab_overzicht:
         ).properties(height=alt.Step(40))
         st.altair_chart(balk, use_container_width=True)
 
-    st.dataframe(
-        samenvatting.sort_values(["VERLOPEN_ACTIES", "PCT_ROOD"], ascending=False),
-        hide_index=True,
-        use_container_width=True,
-        column_config={
-            "AFDELING": "Afdeling",
-            "MELDINGEN": "Meldingen",
-            "MELDINGEN_ROOD": "Rood",
-            "PCT_ROOD": st.column_config.NumberColumn("% rood", format="%d%%"),
-            "OPEN_ACTIES": "Open acties",
-            "VERLOPEN_ACTIES": "Verlopen",
-        },
-    )
+    # Kolomnamen via pandas, zodat het ook werkt op de Streamlit-versie van Snowflake (zonder st.column_config)
+    tabel = samenvatting.sort_values(["VERLOPEN_ACTIES", "PCT_ROOD"], ascending=False).copy()
+    tabel["PCT_ROOD"] = tabel["PCT_ROOD"].map(lambda v: "" if pd.isna(v) else f"{v:.0f}%")
+    tabel = tabel.rename(columns={
+        "AFDELING": "Afdeling", "MELDINGEN": "Meldingen", "MELDINGEN_ROOD": "Rood",
+        "PCT_ROOD": "% rood", "OPEN_ACTIES": "Open acties", "VERLOPEN_ACTIES": "Verlopen",
+    }).set_index("Afdeling")
+    st.dataframe(tabel, use_container_width=True)
 
 # ── Heatmap ──────────────────────────────────────────────────────────────────
 with tab_heatmap:
@@ -184,8 +179,8 @@ with tab_heatmap:
 # ── Actielijst ───────────────────────────────────────────────────────────────
 with tab_acties:
     f1, f2, f3 = st.columns(3)
-    afd = f1.multiselect("Afdeling", AFDELINGEN, placeholder="Alle afdelingen")
-    ond = f2.multiselect("Onderwerp", ONDERWERPEN, placeholder="Alle onderwerpen")
+    afd = f1.multiselect("Afdeling (leeg = alle)", AFDELINGEN)
+    ond = f2.multiselect("Onderwerp (leeg = alle)", ONDERWERPEN)
     sig = f3.radio("Signaal", ["Alle", "Verlopen", "In werking"], horizontal=True)
 
     lijst = acties.copy()
@@ -199,24 +194,14 @@ with tab_acties:
     lijst["SIGNAAL"] = lijst["SIGNAAL"].map({"Verlopen": "🔴 Verlopen", "In werking": "🟠 In werking"})
 
     st.caption(f"{len(lijst)} open acties")
-    st.dataframe(
-        lijst[["SIGNAAL", "TITEL", "MELDING", "AFDELING", "KPI", "EIGENAAR", "STATUS", "PRIORITEIT", "DEADLINE", "DAGEN_TE_LAAT"]],
-        hide_index=True,
-        use_container_width=True,
-        column_config={
-            "SIGNAAL": "Signaal",
-            "TITEL": st.column_config.TextColumn("Actie", width="large"),
-            "MELDING": st.column_config.TextColumn("Melding", width="medium"),
-            "AFDELING": "Afdeling",
-            "KPI": "KPI",
-            "EIGENAAR": "Eigenaar",
-            "STATUS": "Status",
-            "PRIORITEIT": "Aanpak",
-            "DEADLINE": st.column_config.DateColumn("Deadline", format="DD-MM-YYYY"),
-            "DAGEN_TE_LAAT": st.column_config.NumberColumn("Dagen te laat"),
-        },
-    )
-
+    lijst["DEADLINE"] = pd.to_datetime(lijst["DEADLINE"]).dt.strftime("%d-%m-%Y")
+    lijst = lijst[["SIGNAAL", "TITEL", "MELDING", "AFDELING", "KPI", "EIGENAAR", "STATUS", "PRIORITEIT", "DEADLINE", "DAGEN_TE_LAAT"]]
+    lijst = lijst.rename(columns={
+        "SIGNAAL": "Signaal", "TITEL": "Actie", "MELDING": "Melding", "AFDELING": "Afdeling", "KPI": "KPI",
+        "EIGENAAR": "Eigenaar", "STATUS": "Status", "PRIORITEIT": "Aanpak", "DEADLINE": "Deadline",
+        "DAGEN_TE_LAAT": "Dagen te laat",
+    }).set_index("Signaal")
+    st.dataframe(lijst, use_container_width=True)
 # ── AI-samenvatting ──────────────────────────────────────────────────────────
 with tab_ai:
     st.markdown("Een korte samenvatting voor de dagstart, gemaakt met Snowflake Cortex op basis van de cijfers hierboven.")
